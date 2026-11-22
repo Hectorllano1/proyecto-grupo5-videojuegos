@@ -1,61 +1,57 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
-<head th:replace="~{fragments/layout :: head(${fichaTecnica.id == null ? 'Nueva ficha técnica' : 'Editar ficha técnica'})}"></head>
+<head th:replace="~{fragments/head :: head(${fichaTecnica.id == null ? 'Nueva ficha técnica' : 'Editar ficha técnica'})}"></head>
 <body>
-<header th:replace="~{fragments/layout :: cabecera}"></header>
-<main class="contenedor">
+<header th:replace="~{fragments/header :: header}"></header>
+<main>
     <h1 th:text="${fichaTecnica.id == null} ? 'Nueva ficha técnica' : 'Editar ficha técnica'">Ficha técnica</h1>
 
-    <div class="alerta error" th:if="${#fields.hasErrors('${fichaTecnica.*}')}">
+    <div th:if="${#fields.hasErrors('${fichaTecnica.*}')}">
         Hay errores en el formulario. Revisa los campos marcados.
     </div>
 
-    <form th:action="@{/fichas/guardar}" th:object="${fichaTecnica}" method="post" class="formulario" novalidate>
+    <form th:action="@{/fichas/guardar}" th:object="${fichaTecnica}" method="post" novalidate>
         <input type="hidden" th:field="*{id}">
 
-        <div class="fila">
-            <div class="campo">
+        <div>
+            <div>
                 <label for="sistemaOperativo">Sistema operativo *</label>
-                <input type="text" id="sistemaOperativo" th:field="*{sistemaOperativo}" maxlength="80"
-                       th:classappend="${#fields.hasErrors('sistemaOperativo')} ? 'invalido'">
-                <span class="msg-error" th:if="${#fields.hasErrors('sistemaOperativo')}" th:errors="*{sistemaOperativo}"></span>
+                <input type="text" id="sistemaOperativo" th:field="*{sistemaOperativo}" maxlength="80">
+                <span th:if="${#fields.hasErrors('sistemaOperativo')}" th:errors="*{sistemaOperativo}"></span>
             </div>
-            <div class="campo">
+            <div>
                 <label for="procesador">Procesador *</label>
-                <input type="text" id="procesador" th:field="*{procesador}" maxlength="100"
-                       th:classappend="${#fields.hasErrors('procesador')} ? 'invalido'">
-                <span class="msg-error" th:if="${#fields.hasErrors('procesador')}" th:errors="*{procesador}"></span>
+                <input type="text" id="procesador" th:field="*{procesador}" maxlength="100">
+                <span th:if="${#fields.hasErrors('procesador')}" th:errors="*{procesador}"></span>
             </div>
         </div>
 
-        <div class="fila">
-            <div class="campo">
+        <div>
+            <div>
                 <label for="memoriaRamGb">Memoria RAM (GB) *</label>
-                <input type="number" min="1" id="memoriaRamGb" th:field="*{memoriaRamGb}"
-                       th:classappend="${#fields.hasErrors('memoriaRamGb')} ? 'invalido'">
-                <span class="msg-error" th:if="${#fields.hasErrors('memoriaRamGb')}" th:errors="*{memoriaRamGb}"></span>
+                <input type="number" min="1" id="memoriaRamGb" th:field="*{memoriaRamGb}">
+                <span th:if="${#fields.hasErrors('memoriaRamGb')}" th:errors="*{memoriaRamGb}"></span>
             </div>
-            <div class="campo">
+            <div>
                 <label for="espacioDiscoGb">Espacio en disco (GB) *</label>
-                <input type="number" min="1" id="espacioDiscoGb" th:field="*{espacioDiscoGb}"
-                       th:classappend="${#fields.hasErrors('espacioDiscoGb')} ? 'invalido'">
-                <span class="msg-error" th:if="${#fields.hasErrors('espacioDiscoGb')}" th:errors="*{espacioDiscoGb}"></span>
+                <input type="number" min="1" id="espacioDiscoGb" th:field="*{espacioDiscoGb}">
+                <span th:if="${#fields.hasErrors('espacioDiscoGb')}" th:errors="*{espacioDiscoGb}"></span>
             </div>
         </div>
 
-        <div class="campo campo-check">
+        <div>
             <label>
                 <input type="checkbox" th:field="*{requiereInternet}">
                 Requiere conexión a internet
             </label>
         </div>
 
-        <div class="botones">
-            <button type="submit" class="btn btn-primario">Guardar</button>
-            <a class="btn btn-secundario" th:href="@{/fichas}">Cancelar</a>
+        <div>
+            <button type="submit">Guardar</button>
+            <a th:href="@{/fichas}">Cancelar</a>
         </div>
     </form>
 </main>
-<footer th:replace="~{fragments/layout :: pie}"></footer>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>
 </html>

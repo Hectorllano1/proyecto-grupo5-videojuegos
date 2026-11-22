@@ -101,4 +101,17 @@ public class Pedido {
         this.numeroSeguimiento = numeroSeguimiento;
         this.cliente = cliente;
     }
+
+    /**
+     * Indica si el pedido incluye el videojuego con el id dado. Se usa en el formulario
+     * para marcar como seleccionadas las opciones del desplegable múltiple.
+     * @param videojuegoId Id del videojuego.
+     * @return {@code true} si el pedido lo contiene.
+     */
+    public boolean contieneVideojuego(Long videojuegoId) {
+        if (videojuegoId == null || videojuegos == null) {
+            return false;
+        }
+        return videojuegos.stream().anyMatch(v -> videojuegoId.equals(v.getId()));
+    }
 }

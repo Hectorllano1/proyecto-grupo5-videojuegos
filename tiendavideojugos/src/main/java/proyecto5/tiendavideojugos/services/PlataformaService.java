@@ -38,15 +38,13 @@ public class PlataformaService {
         if (plataforma.getGeneracion() != null) {
             plataforma.setGeneracion(plataforma.getGeneracion().trim());
         }
-        if (plataforma.getFechaLanzamiento() != null) {
-            plataforma.setFechaLanzamiento(plataforma.getFechaLanzamiento().trim());
-        }
         return plataformaRepository.save(plataforma);
     }
 
     @Transactional
     public void deleteById(Long id) {
         plataformaRepository.deleteById(id);
+        plataformaRepository.flush();
     }
 
     public boolean existsNombre(String nombre, Long currentId) {

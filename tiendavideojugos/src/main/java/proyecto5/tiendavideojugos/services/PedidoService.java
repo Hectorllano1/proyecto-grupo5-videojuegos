@@ -81,5 +81,6 @@ public class PedidoService {
     @Transactional
     public void deleteById(Long id) {
         pedidoRepository.deleteById(id);
+        pedidoRepository.flush();
     }
 }

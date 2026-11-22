@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <body>
-<header th:fragment="header" class="site-header">
-    <div class="container header-content">
-        <a th:href="@{/}" class="brand">🎮 GameStore</a>
-        <nav class="main-nav">
-            <a th:href="@{/}" class="nav-link">Inicio</a>
-            <a th:href="@{/videojuegos}" class="nav-link">Videojuegos</a>
-            <a th:href="@{/categorias}" class="nav-link">Categorías</a>
-            <a th:href="@{/clientes}" class="nav-link">Clientes</a>
-            <a th:href="@{/pedidos}" class="nav-link">Pedidos</a>
-            <a th:href="@{/facturas}" class="nav-link">Facturas</a>
-            <a th:href="@{/plataformas}" class="nav-link">Plataformas</a>
-            <a th:href="@{/desarrolladoras}" class="nav-link">Desarrolladoras</a>
+<header th:fragment="header">
+    <div>
+        <a th:href="@{/}">🎮 GameStore</a>
+        <nav>
+            <a th:href="@{/}">Inicio</a>
+            <a th:href="@{/videojuegos}">Videojuegos</a>
+            <a th:href="@{/categorias}">Categorías</a>
+            <a th:href="@{/fichas}">Fichas técnicas</a>
+            <a th:href="@{/clientes}">Clientes</a>
+            <a th:href="@{/templates/pedidos}">Pedidos</a>
+            <a th:href="@{/facturas}">Facturas</a>
+            <a th:href="@{/plataformas}">Plataformas</a>
+            <a th:href="@{/desarrolladoras}">Desarrolladoras</a>
         </nav>
     </div>
 </header>

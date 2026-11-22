@@ -2,10 +2,14 @@ package proyecto5.tiendavideojugos.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 
 /**
  * La clase `Plataforma` representa una entidad que modela una plataforma dentro de la base de datos.
@@ -42,10 +46,10 @@ public class Plataforma {
     private String generacion;
 
     // Campo que almacena la fecha de lanzamiento de la plataforma.
-    @NotEmpty(message = "La plataforma debe tener una fecha de lanzamiento")
-    @Size(max = 100, message = "La fecha de lanzamiento de la plataforma no puede superar los 100 caracteres")
-    @Column(name = "fecha_lanzamiento", nullable = false, length = 100)
-    private String fechaLanzamiento;
+    @NotNull(message = "La plataforma debe tener una fecha de lanzamiento")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @Column(name = "fecha_lanzamiento", nullable = false)
+    private LocalDate fechaLanzamiento;
 
     // Campo que indica si la plataforma es portátil o no.
     @Column(name = "es_portatil", nullable = false)
@@ -61,7 +65,7 @@ public class Plataforma {
      * @param fechaLanzamiento La fecha de lanzamiento de la plataforma.
      * @param esPortatil       Indica si la plataforma es portátil o no.
      */
-    public Plataforma(String nombre, String fabricante, String generacion, String fechaLanzamiento, boolean esPortatil) {
+    public Plataforma(String nombre, String fabricante, String generacion, LocalDate fechaLanzamiento, boolean esPortatil) {
         this.nombre = nombre;
         this.fabricante = fabricante;
         this.generacion = generacion;

@@ -87,7 +87,7 @@ public class Cliente {
     // Se excluye de toString y equals/hashCode para evitar bucles infinitos con Pedido.cliente.
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
     private List<Pedido> pedidos = new ArrayList<>();
 
     /**

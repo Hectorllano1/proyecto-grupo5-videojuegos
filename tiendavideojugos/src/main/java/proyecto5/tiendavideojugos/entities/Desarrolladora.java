@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * La clase `Desarrolladora` representa una entidad que modela una desarrolladora dentro de la base de datos.
@@ -38,6 +39,7 @@ public class Desarrolladora {
     private String paisOrigen;
 
     // Campo que almacena la fecha de fundación de la desarrolladora.
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) // Para enlazar bien el input type="date" con LocalDate.
     @Column(name = "fecha_fundacion", nullable = true)
     private java.time.LocalDate fechaFundacion;
 

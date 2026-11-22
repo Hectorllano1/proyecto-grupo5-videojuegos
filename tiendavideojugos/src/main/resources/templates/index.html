@@ -4,53 +4,61 @@
 <body>
 <header th:replace="~{fragments/header :: header}"></header>
 
-<main class="container main-content">
-    <section class="hero">
+<main>
+    <p th:if="${successMessage}" th:text="${successMessage}"></p>
+    <p th:if="${errorMessage}" th:text="${errorMessage}"></p>
+
+    <section>
         <h1>GameStore · Administración de Tienda de Videojuegos</h1>
         <p>Gestión integral del catálogo, clientes, pedidos, facturas, plataformas y desarrolladoras.</p>
+        <p>
+            <strong th:text="${totalVideojuegos}">0</strong> videojuegos ·
+            <strong th:text="${totalCategorias}">0</strong> categorías ·
+            <strong th:text="${totalFichas}">0</strong> fichas técnicas
+        </p>
     </section>
 
-    <section class="cards-grid">
-        <article class="card">
+    <section>
+        <article>
             <h2>Videojuegos</h2>
             <p>Catálogo de juegos con precio, stock, fecha de lanzamiento, portada y modo multijugador.</p>
-            <a th:href="@{/videojuegos}" class="btn btn-primary">Ir a Videojuegos</a>
+            <a th:href="@{/videojuegos}">Ir a Videojuegos</a>
         </article>
 
-        <article class="card">
+        <article>
             <h2>Categorías</h2>
             <p>Clasificación de videojuegos por género o categoría y estado activo.</p>
-            <a th:href="@{/categorias}" class="btn btn-primary">Ir a Categorías</a>
+            <a th:href="@{/categorias}">Ir a Categorías</a>
         </article>
 
-        <article class="card">
+        <article>
             <h2>Clientes</h2>
             <p>Gestión de clientes, DNI, correo, teléfono, fecha de registro y estado premium.</p>
-            <a th:href="@{/clientes}" class="btn btn-primary">Ir a Clientes</a>
+            <a th:href="@{/clientes}">Ir a Clientes</a>
         </article>
 
-        <article class="card">
+        <article>
             <h2>Pedidos</h2>
             <p>Control de pedidos, cliente asociado, videojuegos incluidos, estado, importe y seguimiento.</p>
-            <a th:href="@{/pedidos}" class="btn btn-primary">Ir a Pedidos</a>
+            <a th:href="@{/templates/pedidos}">Ir a Pedidos</a>
         </article>
 
-        <article class="card">
+        <article>
             <h2>Facturas</h2>
             <p>Gestión de facturas asociadas a pedidos, número de factura, importe, método de pago y estado de cobro.</p>
-            <a th:href="@{/facturas}" class="btn btn-primary">Ir a Facturas</a>
+            <a th:href="@{/facturas}">Ir a Facturas</a>
         </article>
 
-        <article class="card">
+        <article>
             <h2>Plataformas</h2>
             <p>Consolas y sistemas disponibles, fabricante, generación, lanzamiento y formato portátil.</p>
-            <a th:href="@{/plataformas}" class="btn btn-primary">Ir a Plataformas</a>
+            <a th:href="@{/plataformas}">Ir a Plataformas</a>
         </article>
 
-        <article class="card">
+        <article>
             <h2>Desarrolladoras</h2>
             <p>Estudios desarrolladores, país, fecha de fundación y sitio web oficial.</p>
-            <a th:href="@{/desarrolladoras}" class="btn btn-primary">Ir a Desarrolladoras</a>
+            <a th:href="@{/desarrolladoras}">Ir a Desarrolladoras</a>
         </article>
     </section>
 </main>

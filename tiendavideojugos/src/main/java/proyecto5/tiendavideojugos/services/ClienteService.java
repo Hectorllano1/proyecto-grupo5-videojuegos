@@ -38,6 +38,7 @@ public class ClienteService {
     @Transactional
     public void deleteById(Long id) {
         clienteRepository.deleteById(id);
+        clienteRepository.flush();
     }
 
     public boolean existsDni(String dni, Long currentId) {

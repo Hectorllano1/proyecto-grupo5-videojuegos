@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -206,6 +207,18 @@ public class VideojuegoController {
         } catch (DataIntegrityViolationException e) {
             ra.addFlashAttribute("error", "No se puede eliminar el videojuego porque está incluido en algún pedido.");
         }
+        return "redirect:/videojuegos";
+    }
+
+    /**
+     * Gestiona las subidas que superan el tamaño máximo permitido (5 MB).
+     *
+     * @param ra atributos flash
+     * @return redirección al listado con un mensaje de error
+     */
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public String imagenDemasiadoGrande(RedirectAttributes ra) {
+        ra.addFlashAttribute("error", "La imagen supera el tamaño máximo permitido (5 MB).");
         return "redirect:/videojuegos";
     }
 

@@ -1,45 +1,43 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
-<head th:replace="~{fragments/layout :: head(${categoria.id == null ? 'Nueva categoría' : 'Editar categoría'})}"></head>
+<head th:replace="~{fragments/head :: head(${categoria.id == null ? 'Nueva categoría' : 'Editar categoría'})}"></head>
 <body>
-<header th:replace="~{fragments/layout :: cabecera}"></header>
-<main class="contenedor">
+<header th:replace="~{fragments/header :: header}"></header>
+<main>
     <h1 th:text="${categoria.id == null} ? 'Nueva categoría' : 'Editar categoría'">Categoría</h1>
 
-    <div class="alerta error" th:if="${#fields.hasErrors('${categoria.*}')}">
+    <div th:if="${#fields.hasErrors('${categoria.*}')}">
         Hay errores en el formulario. Revisa los campos marcados.
     </div>
 
-    <form th:action="@{/categorias/guardar}" th:object="${categoria}" method="post" class="formulario" novalidate>
+    <form th:action="@{/categorias/guardar}" th:object="${categoria}" method="post" novalidate>
         <input type="hidden" th:field="*{id}">
 
-        <div class="campo">
+        <div>
             <label for="nombre">Nombre *</label>
-            <input type="text" id="nombre" th:field="*{nombre}" maxlength="60"
-                   th:classappend="${#fields.hasErrors('nombre')} ? 'invalido'">
-            <span class="msg-error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
+            <input type="text" id="nombre" th:field="*{nombre}" maxlength="60">
+            <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
         </div>
 
-        <div class="campo">
+        <div>
             <label for="descripcion">Descripción *</label>
-            <textarea id="descripcion" th:field="*{descripcion}" rows="3" maxlength="300"
-                      th:classappend="${#fields.hasErrors('descripcion')} ? 'invalido'"></textarea>
-            <span class="msg-error" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></span>
+            <textarea id="descripcion" th:field="*{descripcion}" rows="3" maxlength="300"></textarea>
+            <span th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></span>
         </div>
 
-        <div class="campo campo-check">
+        <div>
             <label>
                 <input type="checkbox" th:field="*{activa}">
                 Categoría activa
             </label>
         </div>
 
-        <div class="botones">
-            <button type="submit" class="btn btn-primario">Guardar</button>
-            <a class="btn btn-secundario" th:href="@{/categorias}">Cancelar</a>
+        <div>
+            <button type="submit">Guardar</button>
+            <a th:href="@{/categorias}">Cancelar</a>
         </div>
     </form>
 </main>
-<footer th:replace="~{fragments/layout :: pie}"></footer>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>
 </html>

@@ -43,7 +43,7 @@ CREATE TABLE plataforma (
                             nombre            VARCHAR(100) NOT NULL UNIQUE,
                             fabricante        VARCHAR(100) NOT NULL,
                             generacion        VARCHAR(100) NOT NULL,
-                            fecha_lanzamiento VARCHAR(100) NOT NULL,
+                            fecha_lanzamiento DATE         NOT NULL,
                             es_portatil       BOOLEAN      NOT NULL DEFAULT FALSE
 );
 

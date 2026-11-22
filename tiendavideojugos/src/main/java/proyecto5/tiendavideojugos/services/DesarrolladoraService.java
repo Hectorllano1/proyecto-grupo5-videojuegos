@@ -44,6 +44,7 @@ public class DesarrolladoraService {
     @Transactional
     public void deleteById(Long id) {
         desarrolladoraRepository.deleteById(id);
+        desarrolladoraRepository.flush();
     }
 
     public boolean existsNombre(String nombre, Long currentId) {

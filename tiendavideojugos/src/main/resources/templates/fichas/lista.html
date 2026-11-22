@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
-<head th:replace="~{fragments/layout :: head('Fichas técnicas')}"></head>
+<head th:replace="~{fragments/head :: head('Fichas técnicas')}"></head>
 <body>
-<header th:replace="~{fragments/layout :: cabecera}"></header>
-<main class="contenedor">
-    <div class="encabezado-pagina">
+<header th:replace="~{fragments/header :: header}"></header>
+<main>
+    <div>
         <h1>Fichas técnicas</h1>
-        <a class="btn btn-primario" th:href="@{/fichas/nuevo}">+ Nueva ficha</a>
+        <a th:href="@{/fichas/nuevo}">+ Nueva ficha</a>
     </div>
 
-    <div th:replace="~{fragments/layout :: mensajes}"></div>
+    <p th:if="${exito}" th:text="${exito}"></p>
+    <p th:if="${error}" th:text="${error}"></p>
 
-    <p th:if="${#lists.isEmpty(fichas)}" class="vacio">Todavía no hay fichas técnicas registradas.</p>
+    <p th:if="${#lists.isEmpty(fichas)}">Todavía no hay fichas técnicas registradas.</p>
 
-    <div class="tabla-scroll" th:unless="${#lists.isEmpty(fichas)}">
+    <div th:unless="${#lists.isEmpty(fichas)}">
         <table>
             <thead>
             <tr>
@@ -30,21 +31,21 @@
             <tr th:each="f : ${fichas}">
                 <td>
                     <span th:if="${f.videojuego != null}" th:text="${f.videojuego.titulo}">Juego</span>
-                    <span th:if="${f.videojuego == null}" class="tenue">Sin asignar</span>
+                    <span th:if="${f.videojuego == null}">Sin asignar</span>
                 </td>
                 <td th:text="${f.sistemaOperativo}">SO</td>
                 <td th:text="${f.procesador}">CPU</td>
                 <td th:text="${f.memoriaRamGb} + ' GB'">8 GB</td>
                 <td th:text="${f.espacioDiscoGb} + ' GB'">50 GB</td>
                 <td>
-                    <span class="etiqueta si" th:if="${f.requiereInternet}">Sí</span>
-                    <span class="etiqueta no" th:unless="${f.requiereInternet}">No</span>
+                    <span th:if="${f.requiereInternet}">Sí</span>
+                    <span th:unless="${f.requiereInternet}">No</span>
                 </td>
-                <td class="acciones">
-                    <a class="btn btn-secundario" th:href="@{/fichas/editar/{id}(id=${f.id})}">Editar</a>
+                <td>
+                    <a th:href="@{/fichas/editar/{id}(id=${f.id})}">Editar</a>
                     <form th:action="@{/fichas/eliminar/{id}(id=${f.id})}" method="post"
                           onsubmit="return confirm('¿Eliminar esta ficha técnica?');">
-                        <button type="submit" class="btn btn-peligro">Eliminar</button>
+                        <button type="submit">Eliminar</button>
                     </form>
                 </td>
             </tr>
@@ -52,6 +53,6 @@
         </table>
     </div>
 </main>
-<footer th:replace="~{fragments/layout :: pie}"></footer>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>
 </html>

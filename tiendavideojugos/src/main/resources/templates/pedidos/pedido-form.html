@@ -9,7 +9,7 @@
         <h1 th:text="${pedido.id == null} ? 'Alta de Pedido' : 'Edición de Pedido'">Formulario de Pedido</h1>
     </div>
 
-    <form th:action="@{/pedidos/guardar}" th:object="${pedido}" method="post" class="form-card">
+    <form th:action="@{/templates/pedidos/guardar}" th:object="${pedido}" method="post" class="form-card">
         <input type="hidden" th:field="*{id}"/>
 
         <div th:if="${#fields.hasErrors('*')}" class="alert alert-error">
@@ -83,7 +83,7 @@
 
         <div class="form-actions">
             <button type="submit" class="btn btn-primary">Guardar</button>
-            <a th:href="@{/pedidos}" class="btn btn-secondary">Cancelar</a>
+            <a th:href="@{/templates/pedidos}" class="btn btn-secondary">Cancelar</a>
         </div>
     </form>
 </main>

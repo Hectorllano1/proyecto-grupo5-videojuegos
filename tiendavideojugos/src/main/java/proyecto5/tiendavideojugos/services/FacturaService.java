@@ -81,5 +81,6 @@ public class FacturaService {
     @Transactional
     public void deleteById(Long id) {
         facturaRepository.deleteById(id);
+        facturaRepository.flush();
     }
 }
