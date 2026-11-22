@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Categorías')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: cabecera}"></header>
+<main class="contenedor">
+    <div class="encabezado-pagina">
+        <h1>Categorías</h1>
+        <a class="btn btn-primario" th:href="@{/categorias/nuevo}">+ Nueva categoría</a>
+    </div>
+
+    <div th:replace="~{fragments/layout :: mensajes}"></div>
+
+    <p th:if="${#lists.isEmpty(categorias)}" class="vacio">Todavía no hay categorías registradas.</p>
+
+    <div class="tabla-scroll" th:unless="${#lists.isEmpty(categorias)}">
+        <table>
+            <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Activa</th>
+                <th>Nº de videojuegos</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="c : ${categorias}">
+                <td th:text="${c.nombre}">Nombre</td>
+                <td th:text="${c.descripcion}">Descripción</td>
+                <td>
+                    <span class="etiqueta si" th:if="${c.activa}">Sí</span>
+                    <span class="etiqueta no" th:unless="${c.activa}">No</span>
+                </td>
+                <td th:text="${#lists.size(c.videojuegos)}">0</td>
+                <td class="acciones">
+                    <a class="btn btn-secundario" th:href="@{/categorias/editar/{id}(id=${c.id})}">Editar</a>
+                    <form th:action="@{/categorias/eliminar/{id}(id=${c.id})}" method="post"
+                          onsubmit="return confirm('¿Eliminar esta categoría?');">
+                        <button type="submit" class="btn btn-peligro">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+<footer th:replace="~{fragments/layout :: pie}"></footer>
+</body>
+</html>
