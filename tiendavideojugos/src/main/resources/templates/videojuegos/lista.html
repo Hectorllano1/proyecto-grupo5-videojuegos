@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Videojuegos')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: cabecera}"></header>
+<main class="contenedor">
+    <div class="encabezado-pagina">
+        <h1>Videojuegos</h1>
+        <a class="btn btn-primario" th:href="@{/videojuegos/nuevo}">+ Nuevo videojuego</a>
+    </div>
+
+    <div th:replace="~{fragments/layout :: mensajes}"></div>
+
+    <p th:if="${#lists.isEmpty(videojuegos)}" class="vacio">Todavía no hay videojuegos registrados.</p>
+
+    <div class="tabla-scroll" th:unless="${#lists.isEmpty(videojuegos)}">
+        <table>
+            <thead>
+            <tr>
+                <th>Imagen</th>
+                <th>Título</th>
+                <th>Categoría</th>
+                <th>Ficha técnica</th>
+                <th>Precio</th>
+                <th>Stock</th>
+                <th>Lanzamiento</th>
+                <th>Multijugador</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="v : ${videojuegos}">
+                <td>
+                    <img th:if="${v.imagen != null}" th:src="@{'/uploads/' + ${v.imagen}}"
+                         th:alt="${v.titulo}" class="miniatura">
+                    <span th:if="${v.imagen == null}" class="sin-imagen">Sin imagen</span>
+                </td>
+                <td><a th:href="@{/videojuegos/{id}(id=${v.id})}" th:text="${v.titulo}">Título</a></td>
+                <td th:text="${v.categoria.nombre}">Categoría</td>
+                <td>
+                    <span th:if="${v.fichaTecnica != null}" th:text="${v.fichaTecnica.resumen}">Ficha</span>
+                    <span th:if="${v.fichaTecnica == null}" class="tenue">—</span>
+                </td>
+                <td th:text="${#numbers.formatDecimal(v.precio, 1, 'POINT', 2, 'COMMA')} + ' €'">0 €</td>
+                <td th:text="${v.stock}">0</td>
+                <td th:text="${#temporals.format(v.fechaLanzamiento, 'dd/MM/yyyy')}">01/01/2020</td>
+                <td>
+                    <span class="etiqueta si" th:if="${v.esMultijugador}">Sí</span>
+                    <span class="etiqueta no" th:unless="${v.esMultijugador}">No</span>
+                </td>
+                <td class="acciones">
+                    <a class="btn btn-secundario" th:href="@{/videojuegos/editar/{id}(id=${v.id})}">Editar</a>
+                    <form th:action="@{/videojuegos/eliminar/{id}(id=${v.id})}" method="post"
+                          onsubmit="return confirm('¿Eliminar este videojuego?');">
+                        <button type="submit" class="btn btn-peligro">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+<footer th:replace="~{fragments/layout :: pie}"></footer>
+</body>
+</html>
