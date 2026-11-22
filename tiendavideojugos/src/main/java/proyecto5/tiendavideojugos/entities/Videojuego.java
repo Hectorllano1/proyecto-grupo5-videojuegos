@@ -19,11 +19,11 @@ import java.time.LocalDate;
  * <ul>
  *   <li>{@link Categoria}: ManyToOne (muchos videojuegos pertenecen a una categoría).</li>
  *   <li>{@link FichaTecnica}: OneToOne (un videojuego tiene como máximo una ficha técnica).</li>
+ *   <li>{@link Plataforma} y {@link Desarrolladora}: ManyToOne.</li>
  * </ul>
  * <p>
- * Nota para el resto del equipo: las columnas {@code plataforma_id} y {@code desarrolladora_id}
- * ya existen en la tabla (ver schema.sql). Darío debe añadir aquí sus dos relaciones ManyToOne
- * y Julio la relación ManyToMany con Pedido.
+ * Además pertenece a una {@link Plataforma} y a una {@link Desarrolladora} (ManyToOne, opcionales).
+ * La relación ManyToMany con {@link Pedido} se define en el lado propietario ({@code Pedido.videojuegos}).
  * </p>
  */
 @Entity
@@ -83,6 +83,16 @@ public class Videojuego {
     @OneToOne
     @JoinColumn(name = "ficha_tecnica_id", unique = true)
     private FichaTecnica fichaTecnica;
+
+    /** Plataforma para la que está disponible el juego (ManyToOne, opcional). */
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "plataforma_id")
+    private Plataforma plataforma;
+
+    /** Desarrolladora del juego (ManyToOne, opcional). */
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "desarrolladora_id")
+    private Desarrolladora desarrolladora;
 
     /** Constructor vacío requerido por JPA. */
     public Videojuego() {
@@ -147,4 +157,16 @@ public class Videojuego {
 
     /** @param fichaTecnica la ficha técnica */
     public void setFichaTecnica(FichaTecnica fichaTecnica) { this.fichaTecnica = fichaTecnica; }
+
+    /** @return la plataforma, o {@code null} si no tiene */
+    public Plataforma getPlataforma() { return plataforma; }
+
+    /** @param plataforma la plataforma */
+    public void setPlataforma(Plataforma plataforma) { this.plataforma = plataforma; }
+
+    /** @return la desarrolladora, o {@code null} si no tiene */
+    public Desarrolladora getDesarrolladora() { return desarrolladora; }
+
+    /** @param desarrolladora la desarrolladora */
+    public void setDesarrolladora(Desarrolladora desarrolladora) { this.desarrolladora = desarrolladora; }
 }

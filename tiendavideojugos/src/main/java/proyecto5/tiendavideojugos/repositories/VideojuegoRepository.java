@@ -1,6 +1,6 @@
 package proyecto5.tiendavideojugos.repositories;
 
-import es.gamestore.model.Videojuego;
+import proyecto5.tiendavideojugos.entities.Videojuego;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

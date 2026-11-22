@@ -1,7 +1,7 @@
 package proyecto5.tiendavideojugos.services;
 
-import es.gamestore.model.Videojuego;
-import es.gamestore.repository.VideojuegoRepository;
+import proyecto5.tiendavideojugos.entities.Videojuego;
+import proyecto5.tiendavideojugos.repositories.VideojuegoRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

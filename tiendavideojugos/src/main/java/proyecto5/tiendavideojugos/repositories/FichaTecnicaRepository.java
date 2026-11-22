@@ -1,6 +1,6 @@
 package proyecto5.tiendavideojugos.repositories;
 
-import es.gamestore.model.FichaTecnica;
+import proyecto5.tiendavideojugos.entities.FichaTecnica;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

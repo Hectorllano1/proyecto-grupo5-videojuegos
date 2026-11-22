@@ -1,18 +1,24 @@
 package proyecto5.tiendavideojugos.controllers;
 
-import es.gamestore.model.Categoria;
-import es.gamestore.model.FichaTecnica;
-import es.gamestore.model.Videojuego;
-import es.gamestore.service.CategoriaService;
-import es.gamestore.service.FichaTecnicaService;
-import es.gamestore.service.VideojuegoService;
 import jakarta.validation.Valid;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import proyecto5.tiendavideojugos.entities.Categoria;
+import proyecto5.tiendavideojugos.entities.Desarrolladora;
+import proyecto5.tiendavideojugos.entities.FichaTecnica;
+import proyecto5.tiendavideojugos.entities.Plataforma;
+import proyecto5.tiendavideojugos.entities.Videojuego;
+import proyecto5.tiendavideojugos.services.CategoriaService;
+import proyecto5.tiendavideojugos.services.DesarrolladoraService;
+import proyecto5.tiendavideojugos.services.FichaTecnicaService;
+import proyecto5.tiendavideojugos.services.PlataformaService;
+import proyecto5.tiendavideojugos.services.VideojuegoService;
 
 import java.io.UncheckedIOException;
 import java.util.Optional;
@@ -30,17 +36,24 @@ public class VideojuegoController {
     private final VideojuegoService videojuegoService;
     private final CategoriaService categoriaService;
     private final FichaTecnicaService fichaService;
+    private final PlataformaService plataformaService;
+    private final DesarrolladoraService desarrolladoraService;
 
     /**
-     * @param videojuegoService servicio de videojuegos
-     * @param categoriaService  servicio de categorías (para el desplegable)
-     * @param fichaService      servicio de fichas técnicas (para el desplegable)
+     * @param videojuegoService     servicio de videojuegos
+     * @param categoriaService      servicio de categorías (para el desplegable)
+     * @param fichaService          servicio de fichas técnicas (para el desplegable)
+     * @param plataformaService     servicio de plataformas (para el desplegable)
+     * @param desarrolladoraService servicio de desarrolladoras (para el desplegable)
      */
     public VideojuegoController(VideojuegoService videojuegoService, CategoriaService categoriaService,
-                                FichaTecnicaService fichaService) {
+                                FichaTecnicaService fichaService, PlataformaService plataformaService,
+                                DesarrolladoraService desarrolladoraService) {
         this.videojuegoService = videojuegoService;
         this.categoriaService = categoriaService;
         this.fichaService = fichaService;
+        this.plataformaService = plataformaService;
+        this.desarrolladoraService = desarrolladoraService;
     }
 
     /**
@@ -144,6 +157,16 @@ public class VideojuegoController {
         }
         videojuego.setFichaTecnica(ficha);
 
+        // Plataforma y desarrolladora (ManyToOne opcionales): se recargan desde la BD por su id.
+        Long plataformaId = videojuego.getPlataforma() != null ? videojuego.getPlataforma().getId() : null;
+        Plataforma plataforma = plataformaId == null ? null : plataformaService.findById(plataformaId).orElse(null);
+        videojuego.setPlataforma(plataforma);
+
+        Long desarrolladoraId = videojuego.getDesarrolladora() != null ? videojuego.getDesarrolladora().getId() : null;
+        Desarrolladora desarrolladora = desarrolladoraId == null ? null
+                : desarrolladoraService.findById(desarrolladoraId).orElse(null);
+        videojuego.setDesarrolladora(desarrolladora);
+
         // Título único
         if (videojuego.getTitulo() != null && !videojuego.getTitulo().isBlank()) {
             Optional<Videojuego> existente = videojuegoService.buscarPorTitulo(videojuego.getTitulo().trim());
@@ -177,8 +200,12 @@ public class VideojuegoController {
      */
     @PostMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Long id, RedirectAttributes ra) {
-        videojuegoService.eliminar(id);
-        ra.addFlashAttribute("exito", "Videojuego eliminado correctamente.");
+        try {
+            videojuegoService.eliminar(id);
+            ra.addFlashAttribute("exito", "Videojuego eliminado correctamente.");
+        } catch (DataIntegrityViolationException e) {
+            ra.addFlashAttribute("error", "No se puede eliminar el videojuego porque está incluido en algún pedido.");
+        }
         return "redirect:/videojuegos";
     }
 
@@ -193,6 +220,8 @@ public class VideojuegoController {
         model.addAttribute("videojuego", videojuego);
         model.addAttribute("categorias", categoriaService.listar());
         model.addAttribute("fichas", fichaService.listarDisponibles(videojuego.getId()));
+        model.addAttribute("plataformas", plataformaService.findAll());
+        model.addAttribute("desarrolladoras", desarrolladoraService.findAll());
         return FORMULARIO;
     }
 }

@@ -1,7 +1,7 @@
 package proyecto5.tiendavideojugos.controllers;
 
-import es.gamestore.model.Categoria;
-import es.gamestore.service.CategoriaService;
+import proyecto5.tiendavideojugos.entities.Categoria;
+import proyecto5.tiendavideojugos.services.CategoriaService;
 import jakarta.validation.Valid;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;

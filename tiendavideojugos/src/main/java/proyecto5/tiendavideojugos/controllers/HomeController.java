@@ -1,8 +1,8 @@
-package es.gamestore.controller;
+package proyecto5.tiendavideojugos.controllers;
 
-import es.gamestore.service.CategoriaService;
-import es.gamestore.service.FichaTecnicaService;
-import es.gamestore.service.VideojuegoService;
+import proyecto5.tiendavideojugos.services.CategoriaService;
+import proyecto5.tiendavideojugos.services.FichaTecnicaService;
+import proyecto5.tiendavideojugos.services.VideojuegoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,3 +43,4 @@ public class HomeController {
         return "index";
     }
 }
+

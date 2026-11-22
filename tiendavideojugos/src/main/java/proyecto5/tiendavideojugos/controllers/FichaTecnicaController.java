@@ -1,7 +1,7 @@
 package proyecto5.tiendavideojugos.controllers;
 
-import es.gamestore.model.FichaTecnica;
-import es.gamestore.service.FichaTecnicaService;
+import proyecto5.tiendavideojugos.entities.FichaTecnica;
+import proyecto5.tiendavideojugos.services.FichaTecnicaService;
 import jakarta.validation.Valid;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
@@ -109,3 +109,4 @@ public class FichaTecnicaController {
         return "redirect:/fichas";
     }
 }
+

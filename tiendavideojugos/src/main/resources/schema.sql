@@ -1,30 +1,42 @@
 -- =====================================================================
--- schema.sql - Tienda de videojuegos
--- Compatible con MySQL/MariaDB y H2.
--- Orden de borrado: de las tablas dependientes a las independientes.
+-- GameStore - schema.sql (esquema completo del grupo: 8 entidades + tabla intermedia)
+-- Compatible con MariaDB/MySQL y H2 (MODE=MySQL).
+-- Se ejecuta en cada arranque: primero se borran las tablas (de las
+-- dependientes a las independientes) y luego se vuelven a crear.
+-- Los nombres de tabla/columna coinciden con las anotaciones @Table y @Column de las entidades.
 -- =====================================================================
 
-DROP TABLE IF EXISTS pedido_videojuego;
 DROP TABLE IF EXISTS facturas;
+DROP TABLE IF EXISTS pedido_videojuego;
 DROP TABLE IF EXISTS pedidos;
 DROP TABLE IF EXISTS videojuego;
 DROP TABLE IF EXISTS clientes;
+DROP TABLE IF EXISTS ficha_tecnica;
+DROP TABLE IF EXISTS categoria;
 DROP TABLE IF EXISTS plataforma;
 DROP TABLE IF EXISTS desarrolladora;
 
 -- ---------------------------------------------------------------------
--- DESARROLLADORA (5 campos)
+-- Categoria, FichaTecnica
 -- ---------------------------------------------------------------------
-CREATE TABLE desarrolladora (
-                                id              BIGINT AUTO_INCREMENT PRIMARY KEY,
-                                nombre          VARCHAR(100) NOT NULL UNIQUE,
-                                pais_origen     VARCHAR(100) NOT NULL,
-                                fecha_fundacion DATE,
-                                pagina_web      VARCHAR(200)
+CREATE TABLE categoria (
+                           id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+                           nombre      VARCHAR(60)  NOT NULL UNIQUE,
+                           descripcion VARCHAR(300) NOT NULL,
+                           activa      BOOLEAN      NOT NULL DEFAULT TRUE
+);
+
+CREATE TABLE ficha_tecnica (
+                               id                BIGINT AUTO_INCREMENT PRIMARY KEY,
+                               sistema_operativo VARCHAR(80)  NOT NULL,
+                               procesador        VARCHAR(100) NOT NULL,
+                               memoria_ram_gb    INT          NOT NULL,
+                               espacio_disco_gb  INT          NOT NULL,
+                               requiere_internet BOOLEAN      NOT NULL DEFAULT FALSE
 );
 
 -- ---------------------------------------------------------------------
--- PLATAFORMA (6 campos)
+-- Plataforma, Desarrolladora
 -- ---------------------------------------------------------------------
 CREATE TABLE plataforma (
                             id                BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -35,26 +47,38 @@ CREATE TABLE plataforma (
                             es_portatil       BOOLEAN      NOT NULL DEFAULT FALSE
 );
 
--- ---------------------------------------------------------------------
--- VIDEOJUEGO (8 campos)
--- OJO: la entidad Videojuego no estaba entre los archivos subidos.
--- Ajusta nombres/tipos de columnas a los de tu entidad real.
--- ---------------------------------------------------------------------
-CREATE TABLE videojuego (
-                            id                BIGINT AUTO_INCREMENT PRIMARY KEY,
-                            titulo            VARCHAR(150)  NOT NULL,
-                            genero            VARCHAR(50)   NOT NULL,
-                            fecha_lanzamiento DATE          NOT NULL,
-                            precio            DECIMAL(10,2) NOT NULL,
-                            stock             INT           NOT NULL DEFAULT 0,
-                            desarrolladora_id BIGINT        NOT NULL,
-                            plataforma_id     BIGINT        NOT NULL,
-                            CONSTRAINT fk_videojuego_desarrolladora FOREIGN KEY (desarrolladora_id) REFERENCES desarrolladora (id),
-                            CONSTRAINT fk_videojuego_plataforma     FOREIGN KEY (plataforma_id)     REFERENCES plataforma (id)
+CREATE TABLE desarrolladora (
+                                id              BIGINT AUTO_INCREMENT PRIMARY KEY,
+                                nombre          VARCHAR(100) NOT NULL UNIQUE,
+                                pais_origen     VARCHAR(100) NOT NULL,
+                                fecha_fundacion DATE,
+                                pagina_web      VARCHAR(200)
 );
 
 -- ---------------------------------------------------------------------
--- CLIENTES (9 campos)
+-- Videojuego (ManyToOne con Categoria, Plataforma y Desarrolladora; OneToOne con FichaTecnica)
+-- ---------------------------------------------------------------------
+CREATE TABLE videojuego (
+                            id                BIGINT AUTO_INCREMENT PRIMARY KEY,
+                            titulo            VARCHAR(120)  NOT NULL UNIQUE,
+                            descripcion       VARCHAR(1000) NOT NULL,
+                            precio            DECIMAL(8,2)  NOT NULL,
+                            stock             INT           NOT NULL,
+                            fecha_lanzamiento DATE          NOT NULL,
+                            imagen            VARCHAR(255),
+                            es_multijugador   BOOLEAN       NOT NULL DEFAULT FALSE,
+                            categoria_id      BIGINT        NOT NULL,
+                            ficha_tecnica_id  BIGINT        UNIQUE,
+                            plataforma_id     BIGINT,
+                            desarrolladora_id BIGINT,
+                            CONSTRAINT fk_videojuego_categoria      FOREIGN KEY (categoria_id)      REFERENCES categoria (id),
+                            CONSTRAINT fk_videojuego_ficha          FOREIGN KEY (ficha_tecnica_id)  REFERENCES ficha_tecnica (id),
+                            CONSTRAINT fk_videojuego_plataforma     FOREIGN KEY (plataforma_id)     REFERENCES plataforma (id),
+                            CONSTRAINT fk_videojuego_desarrolladora FOREIGN KEY (desarrolladora_id) REFERENCES desarrolladora (id)
+);
+
+-- ---------------------------------------------------------------------
+-- Cliente (tabla "clientes", como en @Table de la entidad)
 -- ---------------------------------------------------------------------
 CREATE TABLE clientes (
                           id             BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -69,7 +93,7 @@ CREATE TABLE clientes (
 );
 
 -- ---------------------------------------------------------------------
--- PEDIDOS (7 campos)
+-- Pedido (tabla "pedidos"): ManyToOne con Cliente
 -- ---------------------------------------------------------------------
 CREATE TABLE pedidos (
                          id                 BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -83,7 +107,7 @@ CREATE TABLE pedidos (
 );
 
 -- ---------------------------------------------------------------------
--- PEDIDO_VIDEOJUEGO (tabla intermedia N:M)
+-- Tabla intermedia ManyToMany Pedido-Videojuego
 -- ---------------------------------------------------------------------
 CREATE TABLE pedido_videojuego (
                                    pedido_id     BIGINT NOT NULL,
@@ -94,7 +118,7 @@ CREATE TABLE pedido_videojuego (
 );
 
 -- ---------------------------------------------------------------------
--- FACTURAS (7 campos) - relación 1:1 con pedidos
+-- Factura (tabla "facturas"): OneToOne con Pedido (la FK está aquí, en pedido_id)
 -- ---------------------------------------------------------------------
 CREATE TABLE facturas (
                           id             BIGINT AUTO_INCREMENT PRIMARY KEY,

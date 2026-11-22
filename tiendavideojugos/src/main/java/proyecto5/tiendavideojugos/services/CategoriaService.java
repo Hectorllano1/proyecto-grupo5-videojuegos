@@ -1,7 +1,7 @@
 package proyecto5.tiendavideojugos.services;
 
-import es.gamestore.model.Categoria;
-import es.gamestore.repository.CategoriaRepository;
+import proyecto5.tiendavideojugos.entities.Categoria;
+import proyecto5.tiendavideojugos.repositories.CategoriaRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -80,3 +80,4 @@ public class CategoriaService {
         return repositorio.count();
     }
 }
+

@@ -1,6 +1,5 @@
 package proyecto5.tiendavideojugos.entities;
 
-import es.gamestore.model.Videojuego;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -75,7 +74,7 @@ public class Pedido {
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
 
-    // Relación N:M con Videojuego (asignada a Persona 2 - Julio)
+    // Relación N:M con Videojuego. Pedido es el lado propietario (tabla intermedia pedido_videojuego).
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToMany
@@ -86,11 +85,11 @@ public class Pedido {
     )
     private List<Videojuego> videojuegos = new ArrayList<>();
 
-    // Relación 1:1 con Factura (asignada a Persona 2 - Julio).
-    // Descomentar cuando exista la clase Factura:
+    // Relación 1:1 con Factura (lado inverso: la clave foránea está en facturas.pedido_id).
+    // Sin cascade: un pedido facturado no se puede borrar hasta eliminar su factura.
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "pedido", fetch = FetchType.LAZY)
     private Factura factura;
 
     public Pedido(LocalDate fecha, BigDecimal precioTotal, Estado estado, String direccionEnvio,
