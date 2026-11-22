@@ -1,4 +1,4 @@
-package es.gamestore.controller;
+package proyecto5.tiendavideojugos.controllers;
 
 import es.gamestore.model.Categoria;
 import es.gamestore.service.CategoriaService;

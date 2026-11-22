@@ -1,4 +1,4 @@
-package es.gamestore.repository;
+package proyecto5.tiendavideojugos.repositories;
 
 import es.gamestore.model.Categoria;
 import org.springframework.data.jpa.repository.JpaRepository;

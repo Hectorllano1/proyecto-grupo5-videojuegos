@@ -1,4 +1,4 @@
-package es.gamestore.model;
+package proyecto5.tiendavideojugos.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;

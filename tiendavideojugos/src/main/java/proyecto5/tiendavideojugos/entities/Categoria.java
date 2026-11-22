@@ -1,5 +1,6 @@
-package es.gamestore.model;
+package proyecto5.tiendavideojugos.entities;
 
+import es.gamestore.model.Videojuego;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

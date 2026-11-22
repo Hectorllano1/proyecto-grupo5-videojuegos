@@ -1,4 +1,4 @@
-package es.gamestore.service;
+package proyecto5.tiendavideojugos.services;
 
 import es.gamestore.model.Categoria;
 import es.gamestore.repository.CategoriaRepository;

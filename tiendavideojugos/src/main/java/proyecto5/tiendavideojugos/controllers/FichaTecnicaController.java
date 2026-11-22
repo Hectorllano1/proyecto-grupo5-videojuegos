@@ -1,4 +1,4 @@
-package es.gamestore.controller;
+package proyecto5.tiendavideojugos.controllers;
 
 import es.gamestore.model.FichaTecnica;
 import es.gamestore.service.FichaTecnicaService;
