@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/head :: head(${desarrolladora.id == null} ? 'Nueva Desarrolladora' : 'Editar Desarrolladora')}"></head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main class="container main-content">
+    <div class="page-header">
+        <h1 th:text="${desarrolladora.id == null} ? 'Alta de Desarrolladora' : 'Edición de Desarrolladora'">Formulario de Desarrolladora</h1>
+    </div>
+
+    <form th:action="@{/desarrolladoras/guardar}" th:object="${desarrolladora}" method="post" class="form-card">
+        <input type="hidden" th:field="*{id}"/>
+
+        <div th:if="${#fields.hasErrors('*')}" class="alert alert-error">
+            <p><strong>Por favor, corrige los siguientes errores:</strong></p>
+            <ul>
+                <li th:each="err : ${#fields.allErrors()}" th:text="${err}"></li>
+            </ul>
+        </div>
+
+        <div class="form-group">
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" th:field="*{nombre}" placeholder="Nintendo EPD" class="form-control"/>
+            <span class="field-error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="paisOrigen">País de origen *</label>
+                <input id="paisOrigen" type="text" th:field="*{paisOrigen}" placeholder="Japón" class="form-control"/>
+                <span class="field-error" th:if="${#fields.hasErrors('paisOrigen')}" th:errors="*{paisOrigen}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="fechaFundacion">Fecha de fundación</label>
+                <input id="fechaFundacion" type="date" th:field="*{fechaFundacion}" class="form-control"/>
+                <span class="field-error" th:if="${#fields.hasErrors('fechaFundacion')}" th:errors="*{fechaFundacion}"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="paginaWeb">Página web</label>
+            <input id="paginaWeb" type="text" th:field="*{paginaWeb}" placeholder="https://www.ejemplo.com" class="form-control"/>
+            <span class="field-error" th:if="${#fields.hasErrors('paginaWeb')}" th:errors="*{paginaWeb}"></span>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a th:href="@{/desarrolladoras}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>

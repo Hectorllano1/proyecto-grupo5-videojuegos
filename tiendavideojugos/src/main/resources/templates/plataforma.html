@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/head :: head('Plataformas')}"></head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main class="container main-content">
+    <div class="page-header">
+        <h1>Listado de Plataformas</h1>
+        <a th:href="@{/plataformas/nuevo}" class="btn btn-primary">+ Nueva plataforma</a>
+    </div>
+
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="alert alert-error" th:text="${errorMessage}"></div>
+
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Fabricante</th>
+                <th>Generación</th>
+                <th>Fecha de lanzamiento</th>
+                <th>Portátil</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="p : ${plataformas}">
+                <td th:text="${p.id}">1</td>
+                <td th:text="${p.nombre}">PlayStation 5</td>
+                <td th:text="${p.fabricante}">Sony</td>
+                <td th:text="${p.generacion}">Novena</td>
+                <td th:text="${p.fechaLanzamiento}">2020-11-12</td>
+                <td th:text="${p.esPortatil} ? 'Sí' : 'No'">No</td>
+                <td class="actions">
+                    <a th:href="@{/plataformas/editar/{id}(id=${p.id})}" class="btn btn-secondary btn-sm">Editar</a>
+                    <form th:action="@{/plataformas/eliminar/{id}(id=${p.id})}" method="post" class="inline-form">
+                        <button type="submit"
+                                class="btn btn-danger btn-sm"
+                                onclick="return confirm('¿Seguro que deseas eliminar esta plataforma?');">
+                            Eliminar
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(plataformas)}">
+                <td colspan="7" class="empty-row">No hay plataformas registradas todavía.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>
