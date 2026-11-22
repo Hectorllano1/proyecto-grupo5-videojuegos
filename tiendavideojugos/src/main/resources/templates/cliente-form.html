@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/head :: head(${cliente.id == null} ? 'Nuevo Cliente' : 'Editar Cliente')}"></head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main class="container main-content">
+    <div class="page-header">
+        <h1 th:text="${cliente.id == null} ? 'Alta de Cliente' : 'Edición de Cliente'">Formulario de Cliente</h1>
+    </div>
+
+    <form th:action="@{/clientes/guardar}" th:object="${cliente}" method="post" class="form-card">
+        <input type="hidden" th:field="*{id}"/>
+
+        <div th:if="${#fields.hasErrors('*')}" class="alert alert-error">
+            <p><strong>Por favor, corrige los siguientes errores:</strong></p>
+            <ul>
+                <li th:each="err : ${#fields.allErrors()}" th:text="${err}"></li>
+            </ul>
+        </div>
+
+        <div class="form-group">
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" th:field="*{nombre}" class="form-control"/>
+            <span class="field-error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="apellidos">Apellidos *</label>
+            <input id="apellidos" type="text" th:field="*{apellidos}" class="form-control"/>
+            <span class="field-error" th:if="${#fields.hasErrors('apellidos')}" th:errors="*{apellidos}"></span>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="dni">DNI *</label>
+                <input id="dni" type="text" th:field="*{dni}" placeholder="12345678A" class="form-control"/>
+                <span class="field-error" th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="telefono">Teléfono *</label>
+                <input id="telefono" type="text" th:field="*{telefono}" placeholder="600123456" class="form-control"/>
+                <span class="field-error" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" th:field="*{correo}" placeholder="cliente@ejemplo.com" class="form-control"/>
+            <span class="field-error" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}"></span>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="fechaRegistro">Fecha de registro *</label>
+                <input id="fechaRegistro" type="date" th:field="*{fechaRegistro}" class="form-control"/>
+                <span class="field-error" th:if="${#fields.hasErrors('fechaRegistro')}" th:errors="*{fechaRegistro}"></span>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" th:field="*{esPremium}"/>
+                    <span>Cliente Premium</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="direccion">Dirección postal</label>
+            <input id="direccion" type="text" th:field="*{direccion}" class="form-control"/>
+            <span class="field-error" th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}"></span>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a th:href="@{/clientes}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>

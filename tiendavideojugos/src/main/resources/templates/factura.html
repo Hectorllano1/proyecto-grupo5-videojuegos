@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/head :: head('Facturas')}"></head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main class="container main-content">
+    <div class="page-header">
+        <h1>Listado de Facturas</h1>
+        <a th:href="@{/facturas/nuevo}" class="btn btn-primary">+ Nueva factura</a>
+    </div>
+
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="alert alert-error" th:text="${errorMessage}"></div>
+
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nº Factura</th>
+                <th>Pedido</th>
+                <th>Cliente</th>
+                <th>Fecha emisión</th>
+                <th>Importe total</th>
+                <th>Método pago</th>
+                <th>Pagada</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="f : ${facturas}">
+                <td th:text="${f.id}">1</td>
+                <td th:text="${f.numeroFactura}">FAC-2026-001</td>
+                <td th:text="'Pedido #' + ${f.pedido.id} + ' (' + ${f.pedido.fecha} + ')'">Pedido #1</td>
+                <td th:text="${f.pedido.cliente.nombreCompleto}">Ana López Pérez</td>
+                <td th:text="${f.fechaEmision}">2026-11-22</td>
+                <td th:text="${#numbers.formatDecimal(f.importeTotal, 1, 2)} + ' €'">59,99 €</td>
+                <td th:text="${f.metodoPago != null and !#strings.isEmpty(f.metodoPago)} ? ${f.metodoPago} : '-'">-</td>
+                <td th:text="${f.pagada} ? 'Sí' : 'No'">No</td>
+                <td class="actions">
+                    <a th:href="@{/facturas/editar/{id}(id=${f.id})}" class="btn btn-secondary btn-sm">Editar</a>
+                    <form th:action="@{/facturas/eliminar/{id}(id=${f.id})}" method="post" class="inline-form">
+                        <button type="submit"
+                                class="btn btn-danger btn-sm"
+                                onclick="return confirm('¿Seguro que deseas eliminar esta factura?');">
+                            Eliminar
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(facturas)}">
+                <td colspan="9" class="empty-row">No hay facturas registradas todavía.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>

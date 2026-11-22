@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/head :: head('Inicio')}"></head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main class="container main-content">
+    <section class="hero">
+        <h1>GameStore · Administración de Tienda de Videojuegos</h1>
+        <p>Gestión integral del catálogo, clientes, pedidos, facturas, plataformas y desarrolladoras.</p>
+    </section>
+
+    <section class="cards-grid">
+        <article class="card">
+            <h2>Videojuegos</h2>
+            <p>Catálogo de juegos con precio, stock, fecha de lanzamiento, portada y modo multijugador.</p>
+            <a th:href="@{/videojuegos}" class="btn btn-primary">Ir a Videojuegos</a>
+        </article>
+
+        <article class="card">
+            <h2>Categorías</h2>
+            <p>Clasificación de videojuegos por género o categoría y estado activo.</p>
+            <a th:href="@{/categorias}" class="btn btn-primary">Ir a Categorías</a>
+        </article>
+
+        <article class="card">
+            <h2>Clientes</h2>
+            <p>Gestión de clientes, DNI, correo, teléfono, fecha de registro y estado premium.</p>
+            <a th:href="@{/clientes}" class="btn btn-primary">Ir a Clientes</a>
+        </article>
+
+        <article class="card">
+            <h2>Pedidos</h2>
+            <p>Control de pedidos, cliente asociado, videojuegos incluidos, estado, importe y seguimiento.</p>
+            <a th:href="@{/pedidos}" class="btn btn-primary">Ir a Pedidos</a>
+        </article>
+
+        <article class="card">
+            <h2>Facturas</h2>
+            <p>Gestión de facturas asociadas a pedidos, número de factura, importe, método de pago y estado de cobro.</p>
+            <a th:href="@{/facturas}" class="btn btn-primary">Ir a Facturas</a>
+        </article>
+
+        <article class="card">
+            <h2>Plataformas</h2>
+            <p>Consolas y sistemas disponibles, fabricante, generación, lanzamiento y formato portátil.</p>
+            <a th:href="@{/plataformas}" class="btn btn-primary">Ir a Plataformas</a>
+        </article>
+
+        <article class="card">
+            <h2>Desarrolladoras</h2>
+            <p>Estudios desarrolladores, país, fecha de fundación y sitio web oficial.</p>
+            <a th:href="@{/desarrolladoras}" class="btn btn-primary">Ir a Desarrolladoras</a>
+        </article>
+    </section>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>
