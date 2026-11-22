@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head(${videojuego.titulo})}"></head>
+<body>
+<header th:replace="~{fragments/layout :: cabecera}"></header>
+<main class="contenedor">
+    <div class="encabezado-pagina">
+        <h1 th:text="${videojuego.titulo}">Título</h1>
+        <a class="btn btn-secundario" th:href="@{/videojuegos}">← Volver al listado</a>
+    </div>
+
+    <div class="detalle">
+        <div class="detalle-imagen">
+            <img th:if="${videojuego.imagen != null}" th:src="@{'/uploads/' + ${videojuego.imagen}}"
+                 th:alt="${videojuego.titulo}">
+            <div th:if="${videojuego.imagen == null}" class="sin-imagen grande">Sin imagen</div>
+        </div>
+        <div class="detalle-datos">
+            <p th:text="${videojuego.descripcion}">Descripción</p>
+            <dl>
+                <dt>Categoría</dt><dd th:text="${videojuego.categoria.nombre}">Categoría</dd>
+                <dt>Precio</dt><dd th:text="${#numbers.formatDecimal(videojuego.precio, 1, 'POINT', 2, 'COMMA')} + ' €'">0 €</dd>
+                <dt>Stock</dt><dd th:text="${videojuego.stock}">0</dd>
+                <dt>Lanzamiento</dt><dd th:text="${#temporals.format(videojuego.fechaLanzamiento, 'dd/MM/yyyy')}">01/01/2020</dd>
+                <dt>Multijugador</dt><dd th:text="${videojuego.esMultijugador} ? 'Sí' : 'No'">No</dd>
+            </dl>
+
+            <h2>Ficha técnica</h2>
+            <p th:if="${videojuego.fichaTecnica == null}" class="tenue">Este videojuego no tiene ficha técnica.</p>
+            <dl th:if="${videojuego.fichaTecnica != null}">
+                <dt>Sistema operativo</dt><dd th:text="${videojuego.fichaTecnica.sistemaOperativo}">SO</dd>
+                <dt>Procesador</dt><dd th:text="${videojuego.fichaTecnica.procesador}">CPU</dd>
+                <dt>Memoria RAM</dt><dd th:text="${videojuego.fichaTecnica.memoriaRamGb} + ' GB'">8 GB</dd>
+                <dt>Espacio en disco</dt><dd th:text="${videojuego.fichaTecnica.espacioDiscoGb} + ' GB'">50 GB</dd>
+                <dt>Requiere internet</dt><dd th:text="${videojuego.fichaTecnica.requiereInternet} ? 'Sí' : 'No'">No</dd>
+            </dl>
+
+            <div class="botones">
+                <a class="btn btn-primario" th:href="@{/videojuegos/editar/{id}(id=${videojuego.id})}">Editar</a>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:replace="~{fragments/layout :: pie}"></footer>
+</body>
+</html>

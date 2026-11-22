@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Inicio')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: cabecera}"></header>
+<main class="contenedor">
+    <h1>Bienvenido a GameStore</h1>
+    <p class="subtitulo">Gestión del catálogo de videojuegos.</p>
+
+    <div class="tarjetas">
+        <a class="tarjeta" th:href="@{/videojuegos}">
+            <span class="numero" th:text="${totalVideojuegos}">0</span>
+            <span>Videojuegos</span>
+        </a>
+        <a class="tarjeta" th:href="@{/categorias}">
+            <span class="numero" th:text="${totalCategorias}">0</span>
+            <span>Categorías</span>
+        </a>
+        <a class="tarjeta" th:href="@{/fichas}">
+            <span class="numero" th:text="${totalFichas}">0</span>
+            <span>Fichas técnicas</span>
+        </a>
+    </div>
+</main>
+<footer th:replace="~{fragments/layout :: pie}"></footer>
+</body>
+</html>
