@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/head :: head('Pedidos')}"></head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main class="container main-content">
+    <div class="page-header">
+        <h1>Listado de Pedidos</h1>
+        <a th:href="@{/pedidos/nuevo}" class="btn btn-primary">+ Nuevo pedido</a>
+    </div>
+
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="alert alert-error" th:text="${errorMessage}"></div>
+
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Videojuegos</th>
+                <th>Fecha</th>
+                <th>Precio total</th>
+                <th>Estado</th>
+                <th>Dirección de envío</th>
+                <th>Nº seguimiento</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="p : ${pedidos}">
+                <td th:text="${p.id}">1</td>
+                <td th:text="${p.cliente.nombreCompleto} + ' (' + ${p.cliente.dni} + ')'">Ana López Pérez</td>
+                <td>
+                    <span th:if="${#lists.isEmpty(p.videojuegos)}">-</span>
+                    <span th:unless="${#lists.isEmpty(p.videojuegos)}">
+                                <span th:each="vj, iter : ${p.videojuegos}"
+                                      th:text="${vj.titulo} + (${!iter.last} ? ', ' : '')"></span>
+                            </span>
+                </td>
+                <td th:text="${p.fecha}">2026-11-22</td>
+                <td th:text="${#numbers.formatDecimal(p.precioTotal, 1, 2)} + ' €'">59,99 €</td>
+                <td th:text="${p.estado.etiqueta}">Pendiente</td>
+                <td th:text="${p.direccionEnvio}">Calle Mayor 10</td>
+                <td th:text="${p.numeroSeguimiento != null and !#strings.isEmpty(p.numeroSeguimiento)} ? ${p.numeroSeguimiento} : 'Sin asignar'">Sin asignar</td>
+                <td class="actions">
+                    <a th:href="@{/pedidos/editar/{id}(id=${p.id})}" class="btn btn-secondary btn-sm">Editar</a>
+                    <form th:action="@{/pedidos/eliminar/{id}(id=${p.id})}" method="post" class="inline-form">
+                        <button type="submit"
+                                class="btn btn-danger btn-sm"
+                                onclick="return confirm('¿Seguro que deseas eliminar este pedido?');">
+                            Eliminar
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(pedidos)}">
+                <td colspan="9" class="empty-row">No hay pedidos registrados todavía.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>

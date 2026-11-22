@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/head :: head('Clientes')}"></head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main class="container main-content">
+    <div class="page-header">
+        <h1>Listado de Clientes</h1>
+        <a th:href="@{/clientes/nuevo}" class="btn btn-primary">+ Nuevo cliente</a>
+    </div>
+
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="alert alert-error" th:text="${errorMessage}"></div>
+
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre completo</th>
+                <th>DNI</th>
+                <th>Correo</th>
+                <th>Teléfono</th>
+                <th>Fecha registro</th>
+                <th>Dirección</th>
+                <th>Premium</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="c : ${clientes}">
+                <td th:text="${c.id}">1</td>
+                <td th:text="${c.nombreCompleto}">Ana López Pérez</td>
+                <td th:text="${c.dni}">12345678A</td>
+                <td th:text="${c.correo}">ana@ejemplo.com</td>
+                <td th:text="${c.telefono}">600123456</td>
+                <td th:text="${c.fechaRegistro}">2026-01-10</td>
+                <td th:text="${c.direccion != null and !#strings.isEmpty(c.direccion)} ? ${c.direccion} : '-'">-</td>
+                <td th:text="${c.esPremium} ? 'Sí' : 'No'">No</td>
+                <td class="actions">
+                    <a th:href="@{/clientes/editar/{id}(id=${c.id})}" class="btn btn-secondary btn-sm">Editar</a>
+                    <form th:action="@{/clientes/eliminar/{id}(id=${c.id})}" method="post" class="inline-form">
+                        <button type="submit"
+                                class="btn btn-danger btn-sm"
+                                onclick="return confirm('¿Seguro que deseas eliminar este cliente?');">
+                            Eliminar
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(clientes)}">
+                <td colspan="9" class="empty-row">No hay clientes registrados todavía.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>

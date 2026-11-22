@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/head :: head('Desarrolladoras')}"></head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main class="container main-content">
+    <div class="page-header">
+        <h1>Listado de Desarrolladoras</h1>
+        <a th:href="@{/desarrolladoras/nuevo}" class="btn btn-primary">+ Nueva desarrolladora</a>
+    </div>
+
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="alert alert-error" th:text="${errorMessage}"></div>
+
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>País de origen</th>
+                <th>Fecha de fundación</th>
+                <th>Página web</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="d : ${desarrolladoras}">
+                <td th:text="${d.id}">1</td>
+                <td th:text="${d.nombre}">Nintendo EPD</td>
+                <td th:text="${d.paisOrigen}">Japón</td>
+                <td th:text="${d.fechaFundacion != null} ? ${d.fechaFundacion} : '-'">1889-09-23</td>
+                <td>
+                    <a th:if="${d.paginaWeb != null and !#strings.isEmpty(d.paginaWeb)}"
+                       th:href="${d.paginaWeb}"
+                       th:text="${d.paginaWeb}"
+                       target="_blank" rel="noopener noreferrer">https://www.ejemplo.com</a>
+                    <span th:unless="${d.paginaWeb != null and !#strings.isEmpty(d.paginaWeb)}">-</span>
+                </td>
+                <td class="actions">
+                    <a th:href="@{/desarrolladoras/editar/{id}(id=${d.id})}" class="btn btn-secondary btn-sm">Editar</a>
+                    <form th:action="@{/desarrolladoras/eliminar/{id}(id=${d.id})}" method="post" class="inline-form">
+                        <button type="submit"
+                                class="btn btn-danger btn-sm"
+                                onclick="return confirm('¿Seguro que deseas eliminar esta desarrolladora?');">
+                            Eliminar
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(desarrolladoras)}">
+                <td colspan="6" class="empty-row">No hay desarrolladoras registradas todavía.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>
