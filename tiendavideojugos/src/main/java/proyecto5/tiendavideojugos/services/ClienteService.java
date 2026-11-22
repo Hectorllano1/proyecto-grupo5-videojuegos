@@ -5,12 +5,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import proyecto5.tiendavideojugos.entities.Cliente;
 import proyecto5.tiendavideojugos.repositories.ClienteRepository;
+
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Servicio con la lógica de negocio asociada a {@link Cliente}.
- */
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)

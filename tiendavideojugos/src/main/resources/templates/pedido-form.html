@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/head :: head(${pedido.id == null} ? 'Nuevo Pedido' : 'Editar Pedido')}"></head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main class="container main-content">
+    <div class="page-header">
+        <h1 th:text="${pedido.id == null} ? 'Alta de Pedido' : 'Edición de Pedido'">Formulario de Pedido</h1>
+    </div>
+
+    <form th:action="@{/pedidos/guardar}" th:object="${pedido}" method="post" class="form-card">
+        <input type="hidden" th:field="*{id}"/>
+
+        <div th:if="${#fields.hasErrors('*')}" class="alert alert-error">
+            <p><strong>Por favor, corrige los siguientes errores:</strong></p>
+            <ul>
+                <li th:each="err : ${#fields.allErrors()}" th:text="${err}"></li>
+            </ul>
+        </div>
+
+        <div class="form-group">
+            <label for="cliente">Cliente *</label>
+            <select id="cliente" th:field="*{cliente.id}" class="form-control">
+                <option value="">-- Selecciona un cliente --</option>
+                <option th:each="c : ${clientes}"
+                        th:value="${c.id}"
+                        th:text="${c.nombreCompleto} + ' (' + ${c.dni} + ')'">
+                </option>
+            </select>
+            <span class="field-error" th:if="${#fields.hasErrors('cliente')}" th:errors="*{cliente}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="videojuegos">Videojuegos del pedido</label>
+            <select id="videojuegos" th:field="*{videojuegos}" multiple class="form-control">
+                <option th:each="vj : ${videojuegos}"
+                        th:value="${vj.id}"
+                        th:text="${vj.titulo} + ' (' + ${#numbers.formatDecimal(vj.precio, 1, 2)} + ' €)'">
+                </option>
+            </select>
+            <small>Mantén Ctrl / Cmd para seleccionar varios videojuegos.</small>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="fecha">Fecha *</label>
+                <input id="fecha" type="date" th:field="*{fecha}" class="form-control"/>
+                <span class="field-error" th:if="${#fields.hasErrors('fecha')}" th:errors="*{fecha}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="precioTotal">Precio total (€) *</label>
+                <input id="precioTotal" type="number" step="0.01" min="0.00" th:field="*{precioTotal}" class="form-control"/>
+                <span class="field-error" th:if="${#fields.hasErrors('precioTotal')}" th:errors="*{precioTotal}"></span>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="estado">Estado *</label>
+                <select id="estado" th:field="*{estado}" class="form-control">
+                    <option th:each="est : ${estados}"
+                            th:value="${est}"
+                            th:text="${est.etiqueta}">
+                    </option>
+                </select>
+                <span class="field-error" th:if="${#fields.hasErrors('estado')}" th:errors="*{estado}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="numeroSeguimiento">Número de seguimiento</label>
+                <input id="numeroSeguimiento" type="text" th:field="*{numeroSeguimiento}" placeholder="Opcional" class="form-control"/>
+                <span class="field-error" th:if="${#fields.hasErrors('numeroSeguimiento')}" th:errors="*{numeroSeguimiento}"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="direccionEnvio">Dirección de envío *</label>
+            <input id="direccionEnvio" type="text" th:field="*{direccionEnvio}" class="form-control"/>
+            <span class="field-error" th:if="${#fields.hasErrors('direccionEnvio')}" th:errors="*{direccionEnvio}"></span>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a th:href="@{/pedidos}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>

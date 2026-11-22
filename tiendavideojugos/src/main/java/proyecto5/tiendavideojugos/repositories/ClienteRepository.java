@@ -7,9 +7,6 @@ import proyecto5.tiendavideojugos.entities.Cliente;
 
 import java.util.List;
 
-/**
- * Repositorio de acceso a datos para la entidad {@link Cliente} usando Spring Data JPA.
- */
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
     List<Cliente> findAllByOrderByApellidosAscNombreAsc();
