@@ -24,10 +24,6 @@ import proyecto5.tiendavideojugos.services.VideojuegoService;
 import java.io.UncheckedIOException;
 import java.util.Optional;
 
-/**
- * Controlador del CRUD de videojuegos: listado, ficha de detalle, formulario único de
- * alta/edición con subida de imagen y eliminación.
- */
 @Controller
 @RequestMapping("/videojuegos")
 public class VideojuegoController {
@@ -40,13 +36,6 @@ public class VideojuegoController {
     private final PlataformaService plataformaService;
     private final DesarrolladoraService desarrolladoraService;
 
-    /**
-     * @param videojuegoService     servicio de videojuegos
-     * @param categoriaService      servicio de categorías (para el desplegable)
-     * @param fichaService          servicio de fichas técnicas (para el desplegable)
-     * @param plataformaService     servicio de plataformas (para el desplegable)
-     * @param desarrolladoraService servicio de desarrolladoras (para el desplegable)
-     */
     public VideojuegoController(VideojuegoService videojuegoService, CategoriaService categoriaService,
                                 FichaTecnicaService fichaService, PlataformaService plataformaService,
                                 DesarrolladoraService desarrolladoraService) {
@@ -57,26 +46,12 @@ public class VideojuegoController {
         this.desarrolladoraService = desarrolladoraService;
     }
 
-    /**
-     * Muestra el listado completo de videojuegos.
-     *
-     * @param model modelo de la vista
-     * @return plantilla del listado
-     */
     @GetMapping
     public String listar(Model model) {
         model.addAttribute("videojuegos", videojuegoService.listar());
         return "videojuegos/lista";
     }
 
-    /**
-     * Muestra la ficha de detalle de un videojuego (imagen grande y ficha técnica).
-     *
-     * @param id    identificador del videojuego
-     * @param model modelo de la vista
-     * @param ra    atributos flash
-     * @return plantilla de detalle, o redirección si no existe
-     */
     @GetMapping("/{id}")
     public String detalle(@PathVariable Long id, Model model, RedirectAttributes ra) {
         Optional<Videojuego> videojuego = videojuegoService.buscarPorId(id);
@@ -88,25 +63,11 @@ public class VideojuegoController {
         return "videojuegos/detalle";
     }
 
-    /**
-     * Muestra el formulario vacío para dar de alta un videojuego.
-     *
-     * @param model modelo de la vista
-     * @return plantilla del formulario
-     */
     @GetMapping("/nuevo")
     public String nuevo(Model model) {
         return prepararFormulario(model, new Videojuego());
     }
 
-    /**
-     * Muestra el mismo formulario con los datos de un videojuego existente.
-     *
-     * @param id    identificador del videojuego
-     * @param model modelo de la vista
-     * @param ra    atributos flash
-     * @return plantilla del formulario, o redirección si no existe
-     */
     @GetMapping("/editar/{id}")
     public String editar(@PathVariable Long id, Model model, RedirectAttributes ra) {
         Optional<Videojuego> videojuego = videojuegoService.buscarPorId(id);
@@ -117,29 +78,12 @@ public class VideojuegoController {
         return prepararFormulario(model, videojuego.get());
     }
 
-    /**
-     * Valida y guarda un videojuego (alta o edición según tenga id o no).
-     * <p>
-     * Además de las anotaciones de validación, comprueba que se haya elegido una categoría
-     * existente, que el título no esté repetido y que la ficha técnica elegida no esté
-     * ya asignada a otro videojuego. Si algo falla, vuelve al formulario conservando
-     * todo lo que el usuario había escrito.
-     * </p>
-     *
-     * @param videojuego    videojuego enviado desde el formulario
-     * @param result        resultado de la validación
-     * @param archivoImagen imagen subida (opcional)
-     * @param model         modelo de la vista
-     * @param ra            atributos flash
-     * @return redirección al listado, o el formulario si hay errores
-     */
     @PostMapping("/guardar")
     public String guardar(@Valid @ModelAttribute("videojuego") Videojuego videojuego,
                           BindingResult result,
                           @RequestParam(value = "archivoImagen", required = false) MultipartFile archivoImagen,
                           Model model, RedirectAttributes ra) {
 
-        // Categoría: obligatoria y debe existir (se sustituye la referencia por la entidad completa)
         Long categoriaId = videojuego.getCategoria() != null ? videojuego.getCategoria().getId() : null;
         Categoria categoria = categoriaId == null ? null : categoriaService.buscarPorId(categoriaId).orElse(null);
         if (categoria == null) {
@@ -147,7 +91,6 @@ public class VideojuegoController {
         }
         videojuego.setCategoria(categoria);
 
-        // Ficha técnica: opcional, pero si se elige no puede estar ya asignada a otro juego
         Long fichaId = videojuego.getFichaTecnica() != null ? videojuego.getFichaTecnica().getId() : null;
         FichaTecnica ficha = fichaId == null ? null : fichaService.buscarPorId(fichaId).orElse(null);
         if (ficha != null) {
@@ -158,7 +101,6 @@ public class VideojuegoController {
         }
         videojuego.setFichaTecnica(ficha);
 
-        // Plataforma y desarrolladora (ManyToOne opcionales): se recargan desde la BD por su id.
         Long plataformaId = videojuego.getPlataforma() != null ? videojuego.getPlataforma().getId() : null;
         Plataforma plataforma = plataformaId == null ? null : plataformaService.findById(plataformaId).orElse(null);
         videojuego.setPlataforma(plataforma);
@@ -168,7 +110,6 @@ public class VideojuegoController {
                 : desarrolladoraService.findById(desarrolladoraId).orElse(null);
         videojuego.setDesarrolladora(desarrolladora);
 
-        // Título único
         if (videojuego.getTitulo() != null && !videojuego.getTitulo().isBlank()) {
             Optional<Videojuego> existente = videojuegoService.buscarPorTitulo(videojuego.getTitulo().trim());
             if (existente.isPresent() && !existente.get().getId().equals(videojuego.getId())) {
@@ -192,43 +133,25 @@ public class VideojuegoController {
         return "redirect:/videojuegos";
     }
 
-    /**
-     * Elimina un videojuego (y su imagen) y vuelve al listado actualizado.
-     *
-     * @param id identificador del videojuego
-     * @param ra atributos flash
-     * @return redirección al listado
-     */
     @PostMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Long id, RedirectAttributes ra) {
         try {
             videojuegoService.eliminar(id);
             ra.addFlashAttribute("exito", "Videojuego eliminado correctamente.");
         } catch (DataIntegrityViolationException e) {
-            ra.addFlashAttribute("error", "No se puede eliminar el videojuego porque está incluido en algún pedido.");
+            ra.addFlashAttribute("error", "No se puede eliminar el videojuego porque está incluido en algún pedido o registro relacionado.");
+        } catch (Exception e) {
+            ra.addFlashAttribute("error", "No se pudo eliminar el videojuego: " + e.getMessage());
         }
         return "redirect:/videojuegos";
     }
 
-    /**
-     * Gestiona las subidas que superan el tamaño máximo permitido (5 MB).
-     *
-     * @param ra atributos flash
-     * @return redirección al listado con un mensaje de error
-     */
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public String imagenDemasiadoGrande(RedirectAttributes ra) {
         ra.addFlashAttribute("error", "La imagen supera el tamaño máximo permitido (5 MB).");
         return "redirect:/videojuegos";
     }
 
-    /**
-     * Añade al modelo el videojuego y las listas de opciones necesarias para el formulario.
-     *
-     * @param model      modelo de la vista
-     * @param videojuego videojuego a mostrar en el formulario
-     * @return plantilla del formulario
-     */
     private String prepararFormulario(Model model, Videojuego videojuego) {
         model.addAttribute("videojuego", videojuego);
         model.addAttribute("categorias", categoriaService.listar());
