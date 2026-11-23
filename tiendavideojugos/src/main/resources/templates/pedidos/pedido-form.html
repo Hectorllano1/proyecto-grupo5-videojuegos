@@ -33,9 +33,10 @@
 
         <div class="form-group">
             <label for="videojuegos">Videojuegos del pedido</label>
-            <select id="videojuegos" th:field="*{videojuegos}" multiple class="form-control">
+            <select id="videojuegos" name="videojuegos" multiple size="6" class="form-control">
                 <option th:each="vj : ${videojuegos}"
                         th:value="${vj.id}"
+                        th:selected="${#sets.contains(idsSeleccionados, vj.id)}"
                         th:text="${vj.titulo} + ' (' + ${#numbers.formatDecimal(vj.precio, 1, 2)} + ' €)'">
                 </option>
             </select>

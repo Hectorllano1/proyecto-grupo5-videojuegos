@@ -3,43 +3,55 @@
 <head th:replace="~{fragments/head :: head(${videojuego.titulo})}"></head>
 <body>
 <header th:replace="~{fragments/header :: header}"></header>
-<main>
-    <div>
-        <h1 th:text="${videojuego.titulo}">Título</h1>
-        <a th:href="@{/videojuegos}">← Volver al listado</a>
+<main class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="mb-0" th:text="${videojuego.titulo}">Título</h1>
+        <a th:href="@{/videojuegos}" class="btn btn-outline-secondary">← Volver al listado</a>
     </div>
 
-    <div>
-        <div>
+    <div class="row g-4">
+        <div class="col-md-4">
             <img th:if="${videojuego.imagen != null}" th:src="@{'/uploads/' + ${videojuego.imagen}}"
-                 th:alt="${videojuego.titulo}">
-            <div th:if="${videojuego.imagen == null}">Sin imagen</div>
+                 th:alt="${videojuego.titulo}" class="img-fluid rounded border">
+            <div th:if="${videojuego.imagen == null}" class="border rounded p-5 text-center text-muted bg-light">Sin imagen</div>
         </div>
-        <div>
-            <p th:text="${videojuego.descripcion}">Descripción</p>
-            <dl>
-                <dt>Categoría</dt><dd th:text="${videojuego.categoria.nombre}">Categoría</dd>
-                <dt>Plataforma</dt><dd th:text="${videojuego.plataforma != null} ? ${videojuego.plataforma.nombre} : '—'">Plataforma</dd>
-                <dt>Desarrolladora</dt><dd th:text="${videojuego.desarrolladora != null} ? ${videojuego.desarrolladora.nombre} : '—'">Desarrolladora</dd>
-                <dt>Precio</dt><dd th:text="${#numbers.formatDecimal(videojuego.precio, 1, 'POINT', 2, 'COMMA')} + ' €'">0 €</dd>
-                <dt>Stock</dt><dd th:text="${videojuego.stock}">0</dd>
-                <dt>Lanzamiento</dt><dd th:text="${#temporals.format(videojuego.fechaLanzamiento, 'dd/MM/yyyy')}">01/01/2020</dd>
-                <dt>Multijugador</dt><dd th:text="${videojuego.esMultijugador} ? 'Sí' : 'No'">No</dd>
+
+        <div class="col-md-8">
+            <p class="lead" th:text="${videojuego.descripcion}">Descripción</p>
+
+            <dl class="row">
+                <dt class="col-sm-4">Categoría</dt>
+                <dd class="col-sm-8" th:text="${videojuego.categoria.nombre}">Categoría</dd>
+                <dt class="col-sm-4">Plataforma</dt>
+                <dd class="col-sm-8" th:text="${videojuego.plataforma != null} ? ${videojuego.plataforma.nombre} : '—'">Plataforma</dd>
+                <dt class="col-sm-4">Desarrolladora</dt>
+                <dd class="col-sm-8" th:text="${videojuego.desarrolladora != null} ? ${videojuego.desarrolladora.nombre} : '—'">Desarrolladora</dd>
+                <dt class="col-sm-4">Precio</dt>
+                <dd class="col-sm-8" th:text="${#numbers.formatDecimal(videojuego.precio, 1, 'POINT', 2, 'COMMA')} + ' €'">0 €</dd>
+                <dt class="col-sm-4">Stock</dt>
+                <dd class="col-sm-8" th:text="${videojuego.stock}">0</dd>
+                <dt class="col-sm-4">Lanzamiento</dt>
+                <dd class="col-sm-8" th:text="${#temporals.format(videojuego.fechaLanzamiento, 'dd/MM/yyyy')}">01/01/2020</dd>
+                <dt class="col-sm-4">Multijugador</dt>
+                <dd class="col-sm-8" th:text="${videojuego.esMultijugador} ? 'Sí' : 'No'">No</dd>
             </dl>
 
-            <h2>Ficha técnica</h2>
-            <p th:if="${videojuego.fichaTecnica == null}">Este videojuego no tiene ficha técnica.</p>
-            <dl th:if="${videojuego.fichaTecnica != null}">
-                <dt>Sistema operativo</dt><dd th:text="${videojuego.fichaTecnica.sistemaOperativo}">SO</dd>
-                <dt>Procesador</dt><dd th:text="${videojuego.fichaTecnica.procesador}">CPU</dd>
-                <dt>Memoria RAM</dt><dd th:text="${videojuego.fichaTecnica.memoriaRamGb} + ' GB'">8 GB</dd>
-                <dt>Espacio en disco</dt><dd th:text="${videojuego.fichaTecnica.espacioDiscoGb} + ' GB'">50 GB</dd>
-                <dt>Requiere internet</dt><dd th:text="${videojuego.fichaTecnica.requiereInternet} ? 'Sí' : 'No'">No</dd>
+            <h2 class="h4 mt-4">Ficha técnica</h2>
+            <p th:if="${videojuego.fichaTecnica == null}" class="text-muted">Este videojuego no tiene ficha técnica.</p>
+            <dl class="row" th:if="${videojuego.fichaTecnica != null}">
+                <dt class="col-sm-4">Sistema operativo</dt>
+                <dd class="col-sm-8" th:text="${videojuego.fichaTecnica.sistemaOperativo}">SO</dd>
+                <dt class="col-sm-4">Procesador</dt>
+                <dd class="col-sm-8" th:text="${videojuego.fichaTecnica.procesador}">CPU</dd>
+                <dt class="col-sm-4">Memoria RAM</dt>
+                <dd class="col-sm-8" th:text="${videojuego.fichaTecnica.memoriaRamGb} + ' GB'">8 GB</dd>
+                <dt class="col-sm-4">Espacio en disco</dt>
+                <dd class="col-sm-8" th:text="${videojuego.fichaTecnica.espacioDiscoGb} + ' GB'">50 GB</dd>
+                <dt class="col-sm-4">Requiere internet</dt>
+                <dd class="col-sm-8" th:text="${videojuego.fichaTecnica.requiereInternet} ? 'Sí' : 'No'">No</dd>
             </dl>
 
-            <div>
-                <a th:href="@{/videojuegos/editar/{id}(id=${videojuego.id})}">Editar</a>
-            </div>
+            <a th:href="@{/videojuegos/editar/{id}(id=${videojuego.id})}" class="btn btn-primary">Editar</a>
         </div>
     </div>
 </main>

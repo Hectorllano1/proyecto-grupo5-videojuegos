@@ -3,20 +3,20 @@
 <head th:replace="~{fragments/head :: head('Videojuegos')}"></head>
 <body>
 <header th:replace="~{fragments/header :: header}"></header>
-<main>
-    <div>
-        <h1>Videojuegos</h1>
-        <a th:href="@{/videojuegos/nuevo}">+ Nuevo videojuego</a>
+<main class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="mb-0">Videojuegos</h1>
+        <a th:href="@{/videojuegos/nuevo}" class="btn btn-primary">+ Nuevo videojuego</a>
     </div>
 
-    <p th:if="${exito}" th:text="${exito}"></p>
-    <p th:if="${error}" th:text="${error}"></p>
+    <div th:if="${exito}" class="alert alert-success" th:text="${exito}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
-    <p th:if="${#lists.isEmpty(videojuegos)}">Todavía no hay videojuegos registrados.</p>
+    <div th:if="${#lists.isEmpty(videojuegos)}" class="alert alert-info">Todavía no hay videojuegos registrados.</div>
 
-    <div th:unless="${#lists.isEmpty(videojuegos)}">
-        <table>
-            <thead>
+    <div th:unless="${#lists.isEmpty(videojuegos)}" class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-light">
             <tr>
                 <th>Imagen</th>
                 <th>Título</th>
@@ -35,8 +35,8 @@
             <tr th:each="v : ${videojuegos}">
                 <td>
                     <img th:if="${v.imagen != null}" th:src="@{'/uploads/' + ${v.imagen}}"
-                         th:alt="${v.titulo}">
-                    <span th:if="${v.imagen == null}">Sin imagen</span>
+                         th:alt="${v.titulo}" class="img-thumbnail" width="64">
+                    <span th:if="${v.imagen == null}" class="text-muted">Sin imagen</span>
                 </td>
                 <td><a th:href="@{/videojuegos/{id}(id=${v.id})}" th:text="${v.titulo}">Título</a></td>
                 <td th:text="${v.categoria.nombre}">Categoría</td>
@@ -44,20 +44,20 @@
                 <td th:text="${v.desarrolladora != null} ? ${v.desarrolladora.nombre} : '—'">Desarrolladora</td>
                 <td>
                     <span th:if="${v.fichaTecnica != null}" th:text="${v.fichaTecnica.resumen}">Ficha</span>
-                    <span th:if="${v.fichaTecnica == null}">—</span>
+                    <span th:if="${v.fichaTecnica == null}" class="text-muted">—</span>
                 </td>
                 <td th:text="${#numbers.formatDecimal(v.precio, 1, 'POINT', 2, 'COMMA')} + ' €'">0 €</td>
                 <td th:text="${v.stock}">0</td>
                 <td th:text="${#temporals.format(v.fechaLanzamiento, 'dd/MM/yyyy')}">01/01/2020</td>
                 <td>
-                    <span th:if="${v.esMultijugador}">Sí</span>
-                    <span th:unless="${v.esMultijugador}">No</span>
+                    <span th:if="${v.esMultijugador}" class="badge bg-success">Sí</span>
+                    <span th:unless="${v.esMultijugador}" class="badge bg-secondary">No</span>
                 </td>
-                <td>
-                    <a th:href="@{/videojuegos/editar/{id}(id=${v.id})}">Editar</a>
-                    <form th:action="@{/videojuegos/eliminar/{id}(id=${v.id})}" method="post"
+                <td class="text-nowrap">
+                    <a th:href="@{/videojuegos/editar/{id}(id=${v.id})}" class="btn btn-secondary btn-sm">Editar</a>
+                    <form th:action="@{/videojuegos/eliminar/{id}(id=${v.id})}" method="post" class="d-inline"
                           onsubmit="return confirm('¿Eliminar este videojuego?');">
-                        <button type="submit">Eliminar</button>
+                        <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
                     </form>
                 </td>
             </tr>

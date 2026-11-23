@@ -12,10 +12,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import proyecto5.tiendavideojugos.entities.Pedido;
+import proyecto5.tiendavideojugos.entities.Videojuego;
 import proyecto5.tiendavideojugos.services.ClienteService;
 import proyecto5.tiendavideojugos.services.PedidoService;
 
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/pedidos")
@@ -27,10 +30,20 @@ public class PedidoController {
     private final PedidoService pedidoService;
     private final ClienteService clienteService;
 
-    private void loadFormData(Model model) {
+    /**
+     * Carga los datos que necesita el formulario: clientes, estados, videojuegos disponibles
+     * y los ids de los videojuegos ya seleccionados (para marcarlos en el desplegable múltiple).
+     */
+    private void loadFormData(Model model, Pedido pedido) {
         model.addAttribute("clientes", clienteService.findAll());
         model.addAttribute("estados", Pedido.Estado.values());
         model.addAttribute("videojuegos", pedidoService.findAllVideojuegos());
+        Set<Long> seleccionados = pedido.getVideojuegos() == null ? Set.of()
+                : pedido.getVideojuegos().stream()
+                .map(Videojuego::getId)
+                .filter(id -> id != null)
+                .collect(Collectors.toSet());
+        model.addAttribute("idsSeleccionados", seleccionados);
     }
 
     @GetMapping
@@ -48,8 +61,9 @@ public class PedidoController {
 
     @GetMapping("/nuevo")
     public String showNewForm(Model model) {
-        model.addAttribute("pedido", pedidoService.prepareNewPedido());
-        loadFormData(model);
+        Pedido nuevo = pedidoService.prepareNewPedido();
+        model.addAttribute("pedido", nuevo);
+        loadFormData(model, nuevo);
         return "pedidos/pedido-form";
     }
 
@@ -62,7 +76,7 @@ public class PedidoController {
                 return "redirect:/pedidos";
             }
             model.addAttribute("pedido", pedidoOpt.get());
-            loadFormData(model);
+            loadFormData(model, pedidoOpt.get());
             return "pedidos/pedido-form";
         } catch (DataAccessException e) {
             logger.error("Error al obtener el pedido con ID {}: {}", id, e.getMessage());
@@ -82,14 +96,14 @@ public class PedidoController {
             }
 
             if (result.hasErrors()) {
-                loadFormData(model);
+                loadFormData(model, pedido);
                 return "pedidos/pedido-form";
             }
 
             Optional<Pedido> saved = pedidoService.save(pedido);
             if (saved.isEmpty()) {
                 result.rejectValue("cliente", "error.pedido.cliente.invalido", "El cliente seleccionado no existe.");
-                loadFormData(model);
+                loadFormData(model, pedido);
                 return "pedidos/pedido-form";
             }
 
@@ -97,7 +111,7 @@ public class PedidoController {
             return "redirect:/pedidos";
         } catch (DataIntegrityViolationException e) {
             result.rejectValue("cliente", "error.pedido.integridad", "Datos no válidos en el pedido.");
-            loadFormData(model);
+            loadFormData(model, pedido);
             return "pedidos/pedido-form";
         } catch (DataAccessException e) {
             logger.error("Error de acceso a datos al guardar el pedido: {}", e.getMessage());

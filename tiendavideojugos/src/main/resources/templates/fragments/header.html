@@ -2,20 +2,29 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <body>
 <header th:fragment="header">
-    <div>
-        <a th:href="@{/}">🎮 GameStore</a>
-        <nav>
-            <a th:href="@{/}">Inicio</a>
-            <a th:href="@{/videojuegos}">Videojuegos</a>
-            <a th:href="@{/categorias}">Categorías</a>
-            <a th:href="@{/fichas}">Fichas técnicas</a>
-            <a th:href="@{/clientes}">Clientes</a>
-            <a th:href="@{/templates/pedidos}">Pedidos</a>
-            <a th:href="@{/facturas}">Facturas</a>
-            <a th:href="@{/plataformas}">Plataformas</a>
-            <a th:href="@{/desarrolladoras}">Desarrolladoras</a>
-        </nav>
-    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/}"> Tienda de videojuegos</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#menuPrincipal" aria-controls="menuPrincipal"
+                    aria-expanded="false" aria-label="Mostrar menú">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="menuPrincipal">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/}">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/videojuegos}">Videojuegos</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/categorias}">Categorías</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/fichas}">Fichas técnicas</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/clientes}">Clientes</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/pedidos}">Pedidos</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/facturas}">Facturas</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/plataformas}">Plataformas</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/desarrolladoras}">Desarrolladoras</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 </header>
 </body>
 </html>

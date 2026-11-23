@@ -3,52 +3,51 @@
 <head th:replace="~{fragments/head :: head(${fichaTecnica.id == null ? 'Nueva ficha técnica' : 'Editar ficha técnica'})}"></head>
 <body>
 <header th:replace="~{fragments/header :: header}"></header>
-<main>
-    <h1 th:text="${fichaTecnica.id == null} ? 'Nueva ficha técnica' : 'Editar ficha técnica'">Ficha técnica</h1>
+<main class="container mt-4">
+    <h1 class="mb-3" th:text="${fichaTecnica.id == null} ? 'Nueva ficha técnica' : 'Editar ficha técnica'">Ficha técnica</h1>
 
-    <div th:if="${#fields.hasErrors('${fichaTecnica.*}')}">
+    <div th:if="${#fields.hasErrors('${fichaTecnica.*}')}" class="alert alert-danger">
         Hay errores en el formulario. Revisa los campos marcados.
     </div>
 
-    <form th:action="@{/fichas/guardar}" th:object="${fichaTecnica}" method="post" novalidate>
+    <form th:action="@{/fichas/guardar}" th:object="${fichaTecnica}" method="post" novalidate
+          class="card card-body">
         <input type="hidden" th:field="*{id}">
 
-        <div>
-            <div>
-                <label for="sistemaOperativo">Sistema operativo *</label>
-                <input type="text" id="sistemaOperativo" th:field="*{sistemaOperativo}" maxlength="80">
-                <span th:if="${#fields.hasErrors('sistemaOperativo')}" th:errors="*{sistemaOperativo}"></span>
+        <div class="row g-3 mb-3">
+            <div class="col-md-6">
+                <label for="sistemaOperativo" class="form-label">Sistema operativo *</label>
+                <input type="text" id="sistemaOperativo" th:field="*{sistemaOperativo}" maxlength="80" class="form-control">
+                <div class="text-danger small" th:if="${#fields.hasErrors('sistemaOperativo')}" th:errors="*{sistemaOperativo}"></div>
             </div>
-            <div>
-                <label for="procesador">Procesador *</label>
-                <input type="text" id="procesador" th:field="*{procesador}" maxlength="100">
-                <span th:if="${#fields.hasErrors('procesador')}" th:errors="*{procesador}"></span>
-            </div>
-        </div>
-
-        <div>
-            <div>
-                <label for="memoriaRamGb">Memoria RAM (GB) *</label>
-                <input type="number" min="1" id="memoriaRamGb" th:field="*{memoriaRamGb}">
-                <span th:if="${#fields.hasErrors('memoriaRamGb')}" th:errors="*{memoriaRamGb}"></span>
-            </div>
-            <div>
-                <label for="espacioDiscoGb">Espacio en disco (GB) *</label>
-                <input type="number" min="1" id="espacioDiscoGb" th:field="*{espacioDiscoGb}">
-                <span th:if="${#fields.hasErrors('espacioDiscoGb')}" th:errors="*{espacioDiscoGb}"></span>
+            <div class="col-md-6">
+                <label for="procesador" class="form-label">Procesador *</label>
+                <input type="text" id="procesador" th:field="*{procesador}" maxlength="100" class="form-control">
+                <div class="text-danger small" th:if="${#fields.hasErrors('procesador')}" th:errors="*{procesador}"></div>
             </div>
         </div>
 
-        <div>
-            <label>
-                <input type="checkbox" th:field="*{requiereInternet}">
-                Requiere conexión a internet
-            </label>
+        <div class="row g-3 mb-3">
+            <div class="col-md-6">
+                <label for="memoriaRamGb" class="form-label">Memoria RAM (GB) *</label>
+                <input type="number" min="1" id="memoriaRamGb" th:field="*{memoriaRamGb}" class="form-control">
+                <div class="text-danger small" th:if="${#fields.hasErrors('memoriaRamGb')}" th:errors="*{memoriaRamGb}"></div>
+            </div>
+            <div class="col-md-6">
+                <label for="espacioDiscoGb" class="form-label">Espacio en disco (GB) *</label>
+                <input type="number" min="1" id="espacioDiscoGb" th:field="*{espacioDiscoGb}" class="form-control">
+                <div class="text-danger small" th:if="${#fields.hasErrors('espacioDiscoGb')}" th:errors="*{espacioDiscoGb}"></div>
+            </div>
         </div>
 
-        <div>
-            <button type="submit">Guardar</button>
-            <a th:href="@{/fichas}">Cancelar</a>
+        <div class="form-check mb-3">
+            <input type="checkbox" id="requiereInternet" th:field="*{requiereInternet}" class="form-check-input">
+            <label for="requiereInternet" class="form-check-label">Requiere conexión a internet</label>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a th:href="@{/fichas}" class="btn btn-secondary">Cancelar</a>
         </div>
     </form>
 </main>

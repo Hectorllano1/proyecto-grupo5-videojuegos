@@ -3,38 +3,37 @@
 <head th:replace="~{fragments/head :: head(${categoria.id == null ? 'Nueva categoría' : 'Editar categoría'})}"></head>
 <body>
 <header th:replace="~{fragments/header :: header}"></header>
-<main>
-    <h1 th:text="${categoria.id == null} ? 'Nueva categoría' : 'Editar categoría'">Categoría</h1>
+<main class="container mt-4">
+    <h1 class="mb-3" th:text="${categoria.id == null} ? 'Nueva categoría' : 'Editar categoría'">Categoría</h1>
 
-    <div th:if="${#fields.hasErrors('${categoria.*}')}">
+    <div th:if="${#fields.hasErrors('${categoria.*}')}" class="alert alert-danger">
         Hay errores en el formulario. Revisa los campos marcados.
     </div>
 
-    <form th:action="@{/categorias/guardar}" th:object="${categoria}" method="post" novalidate>
+    <form th:action="@{/categorias/guardar}" th:object="${categoria}" method="post" novalidate
+          class="card card-body">
         <input type="hidden" th:field="*{id}">
 
-        <div>
-            <label for="nombre">Nombre *</label>
-            <input type="text" id="nombre" th:field="*{nombre}" maxlength="60">
-            <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre *</label>
+            <input type="text" id="nombre" th:field="*{nombre}" maxlength="60" class="form-control">
+            <div class="text-danger small" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
         </div>
 
-        <div>
-            <label for="descripcion">Descripción *</label>
-            <textarea id="descripcion" th:field="*{descripcion}" rows="3" maxlength="300"></textarea>
-            <span th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></span>
+        <div class="mb-3">
+            <label for="descripcion" class="form-label">Descripción *</label>
+            <textarea id="descripcion" th:field="*{descripcion}" rows="3" maxlength="300" class="form-control"></textarea>
+            <div class="text-danger small" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></div>
         </div>
 
-        <div>
-            <label>
-                <input type="checkbox" th:field="*{activa}">
-                Categoría activa
-            </label>
+        <div class="form-check mb-3">
+            <input type="checkbox" id="activa" th:field="*{activa}" class="form-check-input">
+            <label for="activa" class="form-check-label">Categoría activa</label>
         </div>
 
-        <div>
-            <button type="submit">Guardar</button>
-            <a th:href="@{/categorias}">Cancelar</a>
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a th:href="@{/categorias}" class="btn btn-secondary">Cancelar</a>
         </div>
     </form>
 </main>

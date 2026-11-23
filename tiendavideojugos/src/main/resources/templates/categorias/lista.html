@@ -3,20 +3,20 @@
 <head th:replace="~{fragments/head :: head('Categorías')}"></head>
 <body>
 <header th:replace="~{fragments/header :: header}"></header>
-<main>
-    <div>
-        <h1>Categorías</h1>
-        <a th:href="@{/categorias/nuevo}">+ Nueva categoría</a>
+<main class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="mb-0">Categorías</h1>
+        <a th:href="@{/categorias/nuevo}" class="btn btn-primary">+ Nueva categoría</a>
     </div>
 
-    <p th:if="${exito}" th:text="${exito}"></p>
-    <p th:if="${error}" th:text="${error}"></p>
+    <div th:if="${exito}" class="alert alert-success" th:text="${exito}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
-    <p th:if="${#lists.isEmpty(categorias)}">Todavía no hay categorías registradas.</p>
+    <div th:if="${#lists.isEmpty(categorias)}" class="alert alert-info">Todavía no hay categorías registradas.</div>
 
-    <div th:unless="${#lists.isEmpty(categorias)}">
-        <table>
-            <thead>
+    <div th:unless="${#lists.isEmpty(categorias)}" class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-light">
             <tr>
                 <th>Nombre</th>
                 <th>Descripción</th>
@@ -30,15 +30,15 @@
                 <td th:text="${c.nombre}">Nombre</td>
                 <td th:text="${c.descripcion}">Descripción</td>
                 <td>
-                    <span th:if="${c.activa}">Sí</span>
-                    <span th:unless="${c.activa}">No</span>
+                    <span th:if="${c.activa}" class="badge bg-success">Sí</span>
+                    <span th:unless="${c.activa}" class="badge bg-secondary">No</span>
                 </td>
                 <td th:text="${#lists.size(c.videojuegos)}">0</td>
-                <td>
-                    <a th:href="@{/categorias/editar/{id}(id=${c.id})}">Editar</a>
-                    <form th:action="@{/categorias/eliminar/{id}(id=${c.id})}" method="post"
+                <td class="text-nowrap">
+                    <a th:href="@{/categorias/editar/{id}(id=${c.id})}" class="btn btn-secondary btn-sm">Editar</a>
+                    <form th:action="@{/categorias/eliminar/{id}(id=${c.id})}" method="post" class="d-inline"
                           onsubmit="return confirm('¿Eliminar esta categoría?');">
-                        <button type="submit">Eliminar</button>
+                        <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
                     </form>
                 </td>
             </tr>

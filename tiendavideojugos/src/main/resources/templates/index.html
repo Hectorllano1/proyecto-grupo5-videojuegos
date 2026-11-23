@@ -4,61 +4,99 @@
 <body>
 <header th:replace="~{fragments/header :: header}"></header>
 
-<main>
-    <p th:if="${successMessage}" th:text="${successMessage}"></p>
-    <p th:if="${errorMessage}" th:text="${errorMessage}"></p>
+<main class="container mt-4">
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
 
-    <section>
-        <h1>GameStore · Administración de Tienda de Videojuegos</h1>
-        <p>Gestión integral del catálogo, clientes, pedidos, facturas, plataformas y desarrolladoras.</p>
+    <section class="text-center py-4">
+        <h1 class="display-5">GameStore · Administración de Tienda de Videojuegos</h1>
+        <p class="lead">Gestión integral del catálogo, clientes, pedidos, facturas, plataformas y desarrolladoras.</p>
         <p>
-            <strong th:text="${totalVideojuegos}">0</strong> videojuegos ·
-            <strong th:text="${totalCategorias}">0</strong> categorías ·
-            <strong th:text="${totalFichas}">0</strong> fichas técnicas
+            <span class="badge bg-primary fs-6"><span th:text="${totalVideojuegos}">0</span> videojuegos</span>
+            <span class="badge bg-secondary fs-6"><span th:text="${totalCategorias}">0</span> categorías</span>
+            <span class="badge bg-dark fs-6"><span th:text="${totalFichas}">0</span> fichas técnicas</span>
         </p>
     </section>
 
-    <section>
-        <article>
-            <h2>Videojuegos</h2>
-            <p>Catálogo de juegos con precio, stock, fecha de lanzamiento, portada y modo multijugador.</p>
-            <a th:href="@{/videojuegos}">Ir a Videojuegos</a>
+    <section class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+        <article class="col">
+            <div class="card h-100">
+                <div class="card-body d-flex flex-column">
+                    <h2 class="h5 card-title">Videojuegos</h2>
+                    <p class="card-text">Catálogo de juegos con precio, stock, fecha de lanzamiento, portada y modo multijugador.</p>
+                    <a th:href="@{/videojuegos}" class="btn btn-primary mt-auto">Ir a Videojuegos</a>
+                </div>
+            </div>
         </article>
 
-        <article>
-            <h2>Categorías</h2>
-            <p>Clasificación de videojuegos por género o categoría y estado activo.</p>
-            <a th:href="@{/categorias}">Ir a Categorías</a>
+        <article class="col">
+            <div class="card h-100">
+                <div class="card-body d-flex flex-column">
+                    <h2 class="h5 card-title">Categorías</h2>
+                    <p class="card-text">Clasificación de videojuegos por género o categoría y estado activo.</p>
+                    <a th:href="@{/categorias}" class="btn btn-primary mt-auto">Ir a Categorías</a>
+                </div>
+            </div>
         </article>
 
-        <article>
-            <h2>Clientes</h2>
-            <p>Gestión de clientes, DNI, correo, teléfono, fecha de registro y estado premium.</p>
-            <a th:href="@{/clientes}">Ir a Clientes</a>
+        <article class="col">
+            <div class="card h-100">
+                <div class="card-body d-flex flex-column">
+                    <h2 class="h5 card-title">Fichas técnicas</h2>
+                    <p class="card-text">Requisitos de cada videojuego: sistema operativo, procesador, memoria y disco.</p>
+                    <a th:href="@{/fichas}" class="btn btn-primary mt-auto">Ir a Fichas técnicas</a>
+                </div>
+            </div>
         </article>
 
-        <article>
-            <h2>Pedidos</h2>
-            <p>Control de pedidos, cliente asociado, videojuegos incluidos, estado, importe y seguimiento.</p>
-            <a th:href="@{/templates/pedidos}">Ir a Pedidos</a>
+        <article class="col">
+            <div class="card h-100">
+                <div class="card-body d-flex flex-column">
+                    <h2 class="h5 card-title">Clientes</h2>
+                    <p class="card-text">Gestión de clientes, DNI, correo, teléfono, fecha de registro y estado premium.</p>
+                    <a th:href="@{/clientes}" class="btn btn-primary mt-auto">Ir a Clientes</a>
+                </div>
+            </div>
         </article>
 
-        <article>
-            <h2>Facturas</h2>
-            <p>Gestión de facturas asociadas a pedidos, número de factura, importe, método de pago y estado de cobro.</p>
-            <a th:href="@{/facturas}">Ir a Facturas</a>
+        <article class="col">
+            <div class="card h-100">
+                <div class="card-body d-flex flex-column">
+                    <h2 class="h5 card-title">Pedidos</h2>
+                    <p class="card-text">Control de pedidos, cliente asociado, videojuegos incluidos, estado, importe y seguimiento.</p>
+                    <a th:href="@{/pedidos}" class="btn btn-primary mt-auto">Ir a Pedidos</a>
+                </div>
+            </div>
         </article>
 
-        <article>
-            <h2>Plataformas</h2>
-            <p>Consolas y sistemas disponibles, fabricante, generación, lanzamiento y formato portátil.</p>
-            <a th:href="@{/plataformas}">Ir a Plataformas</a>
+        <article class="col">
+            <div class="card h-100">
+                <div class="card-body d-flex flex-column">
+                    <h2 class="h5 card-title">Facturas</h2>
+                    <p class="card-text">Gestión de facturas asociadas a pedidos, número, importe, método de pago y estado de cobro.</p>
+                    <a th:href="@{/facturas}" class="btn btn-primary mt-auto">Ir a Facturas</a>
+                </div>
+            </div>
         </article>
 
-        <article>
-            <h2>Desarrolladoras</h2>
-            <p>Estudios desarrolladores, país, fecha de fundación y sitio web oficial.</p>
-            <a th:href="@{/desarrolladoras}">Ir a Desarrolladoras</a>
+        <article class="col">
+            <div class="card h-100">
+                <div class="card-body d-flex flex-column">
+                    <h2 class="h5 card-title">Plataformas</h2>
+                    <p class="card-text">Consolas y sistemas disponibles, fabricante, generación, lanzamiento y formato portátil.</p>
+                    <a th:href="@{/plataformas}" class="btn btn-primary mt-auto">Ir a Plataformas</a>
+                </div>
+            </div>
+        </article>
+
+        <article class="col">
+            <div class="card h-100">
+                <div class="card-body d-flex flex-column">
+                    <h2 class="h5 card-title">Desarrolladoras</h2>
+                    <p class="card-text">Estudios desarrolladores, país, fecha de fundación y sitio web oficial.</p>
+                    <a th:href="@{/desarrolladoras}" class="btn btn-primary mt-auto">Ir a Desarrolladoras</a>
+                </div>
+            </div>
         </article>
     </section>
 </main>
