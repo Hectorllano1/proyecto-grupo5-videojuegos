@@ -4,59 +4,64 @@
 <body>
 <header th:replace="~{fragments/header :: header}"></header>
 
-<main class="container main-content">
-    <div class="page-header">
-        <h1 th:text="${plataforma.id == null} ? 'Alta de Plataforma' : 'Edición de Plataforma'">Formulario de Plataforma</h1>
+<main class="container my-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0" th:text="${plataforma.id == null} ? 'Alta de Plataforma' : 'Edición de Plataforma'">Formulario de Plataforma</h1>
+        <a th:href="@{/plataformas}" class="btn btn-outline-secondary">Volver al listado</a>
     </div>
 
-    <form th:action="@{/plataformas/guardar}" th:object="${plataforma}" method="post" class="form-card">
+    <form th:action="@{/plataformas/guardar}" th:object="${plataforma}" method="post" class="card shadow-sm p-4">
         <input type="hidden" th:field="*{id}"/>
 
-        <div th:if="${#fields.hasErrors('*')}" class="alert alert-error">
-            <p><strong>Por favor, corrige los siguientes errores:</strong></p>
-            <ul>
+        <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger" role="alert">
+            <p class="fw-bold mb-1">Por favor, corrige los siguientes errores:</p>
+            <ul class="mb-0">
                 <li th:each="err : ${#fields.allErrors()}" th:text="${err}"></li>
             </ul>
         </div>
 
-        <div class="form-group">
-            <label for="nombre">Nombre *</label>
-            <input id="nombre" type="text" th:field="*{nombre}" placeholder="PlayStation 5" class="form-control"/>
-            <span class="field-error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre *</label>
+            <input id="nombre" type="text" th:field="*{nombre}" placeholder="PlayStation 5" class="form-control"
+                   th:classappend="${#fields.hasErrors('nombre')} ? 'is-invalid'"/>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
         </div>
 
-        <div class="form-row">
-            <div class="form-group">
-                <label for="fabricante">Fabricante *</label>
-                <input id="fabricante" type="text" th:field="*{fabricante}" placeholder="Sony" class="form-control"/>
-                <span class="field-error" th:if="${#fields.hasErrors('fabricante')}" th:errors="*{fabricante}"></span>
+        <div class="row g-3 mb-3">
+            <div class="col-md-6">
+                <label for="fabricante" class="form-label">Fabricante *</label>
+                <input id="fabricante" type="text" th:field="*{fabricante}" placeholder="Sony" class="form-control"
+                       th:classappend="${#fields.hasErrors('fabricante')} ? 'is-invalid'"/>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('fabricante')}" th:errors="*{fabricante}"></div>
             </div>
 
-            <div class="form-group">
-                <label for="generacion">Generación *</label>
-                <input id="generacion" type="text" th:field="*{generacion}" placeholder="Novena" class="form-control"/>
-                <span class="field-error" th:if="${#fields.hasErrors('generacion')}" th:errors="*{generacion}"></span>
-            </div>
-        </div>
-
-        <div class="form-row">
-            <div class="form-group">
-                <label for="fechaLanzamiento">Fecha de lanzamiento *</label>
-                <input id="fechaLanzamiento" type="text" th:field="*{fechaLanzamiento}" placeholder="2020-11-12" class="form-control"/>
-                <span class="field-error" th:if="${#fields.hasErrors('fechaLanzamiento')}" th:errors="*{fechaLanzamiento}"></span>
-            </div>
-
-            <div class="form-group checkbox-group">
-                <label class="checkbox-label">
-                    <input type="checkbox" th:field="*{esPortatil}"/>
-                    <span>Plataforma portátil</span>
-                </label>
+            <div class="col-md-6">
+                <label for="generacion" class="form-label">Generación *</label>
+                <input id="generacion" type="text" th:field="*{generacion}" placeholder="Novena" class="form-control"
+                       th:classappend="${#fields.hasErrors('generacion')} ? 'is-invalid'"/>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('generacion')}" th:errors="*{generacion}"></div>
             </div>
         </div>
 
-        <div class="form-actions">
+        <div class="row g-3 mb-4 align-items-center">
+            <div class="col-md-6">
+                <label for="fechaLanzamiento" class="form-label">Fecha de lanzamiento *</label>
+                <input id="fechaLanzamiento" type="date" th:field="*{fechaLanzamiento}" class="form-control"
+                       th:classappend="${#fields.hasErrors('fechaLanzamiento')} ? 'is-invalid'"/>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('fechaLanzamiento')}" th:errors="*{fechaLanzamiento}"></div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-check mt-md-4">
+                    <input id="esPortatil" type="checkbox" th:field="*{esPortatil}" class="form-check-input"/>
+                    <label for="esPortatil" class="form-check-label">Plataforma portátil</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex gap-2">
             <button type="submit" class="btn btn-primary">Guardar</button>
-            <a th:href="@{/templates/plataformas}" class="btn btn-secondary">Cancelar</a>
+            <a th:href="@{/plataformas}" class="btn btn-secondary">Cancelar</a>
         </div>
     </form>
 </main>

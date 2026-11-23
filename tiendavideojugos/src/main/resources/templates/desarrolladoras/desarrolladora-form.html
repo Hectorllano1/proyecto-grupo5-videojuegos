@@ -4,50 +4,55 @@
 <body>
 <header th:replace="~{fragments/header :: header}"></header>
 
-<main class="container main-content">
-    <div class="page-header">
-        <h1 th:text="${desarrolladora.id == null} ? 'Alta de Desarrolladora' : 'Edición de Desarrolladora'">Formulario de Desarrolladora</h1>
+<main class="container my-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0" th:text="${desarrolladora.id == null} ? 'Alta de Desarrolladora' : 'Edición de Desarrolladora'">Formulario de Desarrolladora</h1>
+        <a th:href="@{/desarrolladoras}" class="btn btn-outline-secondary">Volver al listado</a>
     </div>
 
-    <form th:action="@{/desarrolladoras/guardar}" th:object="${desarrolladora}" method="post" class="form-card">
+    <form th:action="@{/desarrolladoras/guardar}" th:object="${desarrolladora}" method="post" class="card shadow-sm p-4">
         <input type="hidden" th:field="*{id}"/>
 
-        <div th:if="${#fields.hasErrors('*')}" class="alert alert-error">
-            <p><strong>Por favor, corrige los siguientes errores:</strong></p>
-            <ul>
+        <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger" role="alert">
+            <p class="fw-bold mb-1">Por favor, corrige los siguientes errores:</p>
+            <ul class="mb-0">
                 <li th:each="err : ${#fields.allErrors()}" th:text="${err}"></li>
             </ul>
         </div>
 
-        <div class="form-group">
-            <label for="nombre">Nombre *</label>
-            <input id="nombre" type="text" th:field="*{nombre}" placeholder="Nintendo EPD" class="form-control"/>
-            <span class="field-error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre *</label>
+            <input id="nombre" type="text" th:field="*{nombre}" placeholder="Nintendo EPD" class="form-control"
+                   th:classappend="${#fields.hasErrors('nombre')} ? 'is-invalid'"/>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
         </div>
 
-        <div class="form-row">
-            <div class="form-group">
-                <label for="paisOrigen">País de origen *</label>
-                <input id="paisOrigen" type="text" th:field="*{paisOrigen}" placeholder="Japón" class="form-control"/>
-                <span class="field-error" th:if="${#fields.hasErrors('paisOrigen')}" th:errors="*{paisOrigen}"></span>
+        <div class="row g-3 mb-3">
+            <div class="col-md-6">
+                <label for="paisOrigen" class="form-label">País de origen *</label>
+                <input id="paisOrigen" type="text" th:field="*{paisOrigen}" placeholder="Japón" class="form-control"
+                       th:classappend="${#fields.hasErrors('paisOrigen')} ? 'is-invalid'"/>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('paisOrigen')}" th:errors="*{paisOrigen}"></div>
             </div>
 
-            <div class="form-group">
-                <label for="fechaFundacion">Fecha de fundación</label>
-                <input id="fechaFundacion" type="date" th:field="*{fechaFundacion}" class="form-control"/>
-                <span class="field-error" th:if="${#fields.hasErrors('fechaFundacion')}" th:errors="*{fechaFundacion}"></span>
+            <div class="col-md-6">
+                <label for="fechaFundacion" class="form-label">Fecha de fundación</label>
+                <input id="fechaFundacion" type="date" th:field="*{fechaFundacion}" class="form-control"
+                       th:classappend="${#fields.hasErrors('fechaFundacion')} ? 'is-invalid'"/>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('fechaFundacion')}" th:errors="*{fechaFundacion}"></div>
             </div>
         </div>
 
-        <div class="form-group">
-            <label for="paginaWeb">Página web</label>
-            <input id="paginaWeb" type="text" th:field="*{paginaWeb}" placeholder="https://www.ejemplo.com" class="form-control"/>
-            <span class="field-error" th:if="${#fields.hasErrors('paginaWeb')}" th:errors="*{paginaWeb}"></span>
+        <div class="mb-4">
+            <label for="paginaWeb" class="form-label">Página web</label>
+            <input id="paginaWeb" type="text" th:field="*{paginaWeb}" placeholder="https://www.ejemplo.com" class="form-control"
+                   th:classappend="${#fields.hasErrors('paginaWeb')} ? 'is-invalid'"/>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('paginaWeb')}" th:errors="*{paginaWeb}"></div>
         </div>
 
-        <div class="form-actions">
+        <div class="d-flex gap-2">
             <button type="submit" class="btn btn-primary">Guardar</button>
-            <a th:href="@{/templates/desarrolladoras}" class="btn btn-secondary">Cancelar</a>
+            <a th:href="@{/desarrolladoras}" class="btn btn-secondary">Cancelar</a>
         </div>
     </form>
 </main>

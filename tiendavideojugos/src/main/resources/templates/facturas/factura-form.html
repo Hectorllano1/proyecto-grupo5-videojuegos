@@ -4,73 +4,80 @@
 <body>
 <header th:replace="~{fragments/header :: header}"></header>
 
-<main class="container main-content">
-    <div class="page-header">
-        <h1 th:text="${factura.id == null} ? 'Alta de Factura' : 'Edición de Factura'">Formulario de Factura</h1>
+<main class="container my-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0" th:text="${factura.id == null} ? 'Alta de Factura' : 'Edición de Factura'">Formulario de Factura</h1>
+        <a th:href="@{/facturas}" class="btn btn-outline-secondary">Volver al listado</a>
     </div>
 
-    <form th:action="@{/facturas/guardar}" th:object="${factura}" method="post" class="form-card">
+    <form th:action="@{/facturas/guardar}" th:object="${factura}" method="post" class="card shadow-sm p-4">
         <input type="hidden" th:field="*{id}"/>
 
-        <div th:if="${#fields.hasErrors('*')}" class="alert alert-error">
-            <p><strong>Por favor, corrige los siguientes errores:</strong></p>
-            <ul>
+        <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger" role="alert">
+            <p class="fw-bold mb-1">Por favor, corrige los siguientes errores:</p>
+            <ul class="mb-0">
                 <li th:each="err : ${#fields.allErrors()}" th:text="${err}"></li>
             </ul>
         </div>
 
-        <div class="form-row">
-            <div class="form-group">
-                <label for="numeroFactura">Número de factura *</label>
-                <input id="numeroFactura" type="text" th:field="*{numeroFactura}" placeholder="FAC-2026-001" class="form-control"/>
-                <span class="field-error" th:if="${#fields.hasErrors('numeroFactura')}" th:errors="*{numeroFactura}"></span>
+        <div class="row g-3 mb-3">
+            <div class="col-md-6">
+                <label for="numeroFactura" class="form-label">Número de factura *</label>
+                <input id="numeroFactura" type="text" th:field="*{numeroFactura}" placeholder="FAC-2026-001" class="form-control"
+                       th:classappend="${#fields.hasErrors('numeroFactura')} ? 'is-invalid'"/>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('numeroFactura')}" th:errors="*{numeroFactura}"></div>
             </div>
 
-            <div class="form-group">
-                <label for="pedido">Pedido asociado *</label>
-                <select id="pedido" th:field="*{pedido.id}" class="form-control">
+            <div class="col-md-6">
+                <label for="pedido" class="form-label">Pedido asociado *</label>
+                <select id="pedido" name="pedido.id" class="form-select"
+                        th:classappend="${#fields.hasErrors('pedido')} ? 'is-invalid'">
                     <option value="">-- Selecciona un pedido --</option>
                     <option th:each="p : ${pedidos}"
                             th:value="${p.id}"
+                            th:selected="${factura.pedido != null and factura.pedido.id == p.id}"
                             th:text="'Pedido #' + ${p.id} + ' - ' + ${p.cliente.nombreCompleto} + ' (' + ${#numbers.formatDecimal(p.precioTotal, 1, 2)} + ' €)'">
                     </option>
                 </select>
-                <span class="field-error" th:if="${#fields.hasErrors('pedido')}" th:errors="*{pedido}"></span>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('pedido')}" th:errors="*{pedido}"></div>
             </div>
         </div>
 
-        <div class="form-row">
-            <div class="form-group">
-                <label for="fechaEmision">Fecha de emisión *</label>
-                <input id="fechaEmision" type="date" th:field="*{fechaEmision}" class="form-control"/>
-                <span class="field-error" th:if="${#fields.hasErrors('fechaEmision')}" th:errors="*{fechaEmision}"></span>
+        <div class="row g-3 mb-3">
+            <div class="col-md-6">
+                <label for="fechaEmision" class="form-label">Fecha de emisión *</label>
+                <input id="fechaEmision" type="date" th:field="*{fechaEmision}" class="form-control"
+                       th:classappend="${#fields.hasErrors('fechaEmision')} ? 'is-invalid'"/>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('fechaEmision')}" th:errors="*{fechaEmision}"></div>
             </div>
 
-            <div class="form-group">
-                <label for="importeTotal">Importe total (€) *</label>
-                <input id="importeTotal" type="number" step="0.01" min="0.00" th:field="*{importeTotal}" class="form-control"/>
-                <span class="field-error" th:if="${#fields.hasErrors('importeTotal')}" th:errors="*{importeTotal}"></span>
-            </div>
-        </div>
-
-        <div class="form-row">
-            <div class="form-group">
-                <label for="metodoPago">Método de pago</label>
-                <input id="metodoPago" type="text" th:field="*{metodoPago}" placeholder="Tarjeta, Bizum, Transferencia..." class="form-control"/>
-                <span class="field-error" th:if="${#fields.hasErrors('metodoPago')}" th:errors="*{metodoPago}"></span>
-            </div>
-
-            <div class="form-group checkbox-group">
-                <label class="checkbox-label">
-                    <input type="checkbox" th:field="*{pagada}"/>
-                    <span>Factura pagada</span>
-                </label>
+            <div class="col-md-6">
+                <label for="importeTotal" class="form-label">Importe total (€) *</label>
+                <input id="importeTotal" type="number" step="0.01" min="0.00" th:field="*{importeTotal}" class="form-control"
+                       th:classappend="${#fields.hasErrors('importeTotal')} ? 'is-invalid'"/>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('importeTotal')}" th:errors="*{importeTotal}"></div>
             </div>
         </div>
 
-        <div class="form-actions">
+        <div class="row g-3 mb-4 align-items-center">
+            <div class="col-md-6">
+                <label for="metodoPago" class="form-label">Método de pago</label>
+                <input id="metodoPago" type="text" th:field="*{metodoPago}" placeholder="Tarjeta, Bizum, Transferencia..." class="form-control"
+                       th:classappend="${#fields.hasErrors('metodoPago')} ? 'is-invalid'"/>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('metodoPago')}" th:errors="*{metodoPago}"></div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-check mt-md-4">
+                    <input id="pagada" type="checkbox" th:field="*{pagada}" class="form-check-input"/>
+                    <label for="pagada" class="form-check-label">Factura pagada</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex gap-2">
             <button type="submit" class="btn btn-primary">Guardar</button>
-            <a th:href="@{/templates/facturas}" class="btn btn-secondary">Cancelar</a>
+            <a th:href="@{/facturas}" class="btn btn-secondary">Cancelar</a>
         </div>
     </form>
 </main>

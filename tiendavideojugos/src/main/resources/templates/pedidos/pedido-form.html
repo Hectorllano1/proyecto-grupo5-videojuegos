@@ -4,87 +4,95 @@
 <body>
 <header th:replace="~{fragments/header :: header}"></header>
 
-<main class="container main-content">
-    <div class="page-header">
-        <h1 th:text="${pedido.id == null} ? 'Alta de Pedido' : 'Edición de Pedido'">Formulario de Pedido</h1>
+<main class="container my-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0" th:text="${pedido.id == null} ? 'Alta de Pedido' : 'Edición de Pedido'">Formulario de Pedido</h1>
+        <a th:href="@{/pedidos}" class="btn btn-outline-secondary">Volver al listado</a>
     </div>
 
-    <form th:action="@{/templates/pedidos/guardar}" th:object="${pedido}" method="post" class="form-card">
+    <form th:action="@{/pedidos/guardar}" th:object="${pedido}" method="post" class="card shadow-sm p-4">
         <input type="hidden" th:field="*{id}"/>
 
-        <div th:if="${#fields.hasErrors('*')}" class="alert alert-error">
-            <p><strong>Por favor, corrige los siguientes errores:</strong></p>
-            <ul>
+        <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger" role="alert">
+            <p class="fw-bold mb-1">Por favor, corrige los siguientes errores:</p>
+            <ul class="mb-0">
                 <li th:each="err : ${#fields.allErrors()}" th:text="${err}"></li>
             </ul>
         </div>
 
-        <div class="form-group">
-            <label for="cliente">Cliente *</label>
-            <select id="cliente" th:field="*{cliente.id}" class="form-control">
+        <div class="mb-3">
+            <label for="cliente" class="form-label">Cliente *</label>
+            <select id="cliente" name="cliente.id" class="form-select"
+                    th:classappend="${#fields.hasErrors('cliente')} ? 'is-invalid'">
                 <option value="">-- Selecciona un cliente --</option>
                 <option th:each="c : ${clientes}"
                         th:value="${c.id}"
+                        th:selected="${pedido.cliente != null and pedido.cliente.id == c.id}"
                         th:text="${c.nombreCompleto} + ' (' + ${c.dni} + ')'">
                 </option>
             </select>
-            <span class="field-error" th:if="${#fields.hasErrors('cliente')}" th:errors="*{cliente}"></span>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('cliente')}" th:errors="*{cliente}"></div>
         </div>
 
-        <div class="form-group">
-            <label for="videojuegos">Videojuegos del pedido</label>
-            <select id="videojuegos" name="videojuegos" multiple size="6" class="form-control">
+        <div class="mb-3">
+            <label for="videojuegos" class="form-label">Videojuegos del pedido</label>
+            <select id="videojuegos" name="videojuegos" multiple size="6" class="form-select">
                 <option th:each="vj : ${videojuegos}"
                         th:value="${vj.id}"
-                        th:selected="${#sets.contains(idsSeleccionados, vj.id)}"
+                        th:selected="${idsSeleccionados != null and #sets.contains(idsSeleccionados, vj.id)}"
                         th:text="${vj.titulo} + ' (' + ${#numbers.formatDecimal(vj.precio, 1, 2)} + ' €)'">
                 </option>
             </select>
-            <small>Mantén Ctrl / Cmd para seleccionar varios videojuegos.</small>
+            <div class="form-text">Mantén Ctrl / Cmd para seleccionar varios videojuegos.</div>
         </div>
 
-        <div class="form-row">
-            <div class="form-group">
-                <label for="fecha">Fecha *</label>
-                <input id="fecha" type="date" th:field="*{fecha}" class="form-control"/>
-                <span class="field-error" th:if="${#fields.hasErrors('fecha')}" th:errors="*{fecha}"></span>
+        <div class="row g-3 mb-3">
+            <div class="col-md-6">
+                <label for="fecha" class="form-label">Fecha *</label>
+                <input id="fecha" type="date" th:field="*{fecha}" class="form-control"
+                       th:classappend="${#fields.hasErrors('fecha')} ? 'is-invalid'"/>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('fecha')}" th:errors="*{fecha}"></div>
             </div>
 
-            <div class="form-group">
-                <label for="precioTotal">Precio total (€) *</label>
-                <input id="precioTotal" type="number" step="0.01" min="0.00" th:field="*{precioTotal}" class="form-control"/>
-                <span class="field-error" th:if="${#fields.hasErrors('precioTotal')}" th:errors="*{precioTotal}"></span>
+            <div class="col-md-6">
+                <label for="precioTotal" class="form-label">Precio total (€) *</label>
+                <input id="precioTotal" type="number" step="0.01" min="0.00" th:field="*{precioTotal}" class="form-control"
+                       th:classappend="${#fields.hasErrors('precioTotal')} ? 'is-invalid'"/>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('precioTotal')}" th:errors="*{precioTotal}"></div>
             </div>
         </div>
 
-        <div class="form-row">
-            <div class="form-group">
-                <label for="estado">Estado *</label>
-                <select id="estado" th:field="*{estado}" class="form-control">
+        <div class="row g-3 mb-3">
+            <div class="col-md-6">
+                <label for="estado" class="form-label">Estado *</label>
+                <select id="estado" th:field="*{estado}" class="form-select"
+                        th:classappend="${#fields.hasErrors('estado')} ? 'is-invalid'">
                     <option th:each="est : ${estados}"
                             th:value="${est}"
                             th:text="${est.etiqueta}">
                     </option>
                 </select>
-                <span class="field-error" th:if="${#fields.hasErrors('estado')}" th:errors="*{estado}"></span>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('estado')}" th:errors="*{estado}"></div>
             </div>
 
-            <div class="form-group">
-                <label for="numeroSeguimiento">Número de seguimiento</label>
-                <input id="numeroSeguimiento" type="text" th:field="*{numeroSeguimiento}" placeholder="Opcional" class="form-control"/>
-                <span class="field-error" th:if="${#fields.hasErrors('numeroSeguimiento')}" th:errors="*{numeroSeguimiento}"></span>
+            <div class="col-md-6">
+                <label for="numeroSeguimiento" class="form-label">Número de seguimiento</label>
+                <input id="numeroSeguimiento" type="text" th:field="*{numeroSeguimiento}" placeholder="Opcional" class="form-control"
+                       th:classappend="${#fields.hasErrors('numeroSeguimiento')} ? 'is-invalid'"/>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('numeroSeguimiento')}" th:errors="*{numeroSeguimiento}"></div>
             </div>
         </div>
 
-        <div class="form-group">
-            <label for="direccionEnvio">Dirección de envío *</label>
-            <input id="direccionEnvio" type="text" th:field="*{direccionEnvio}" class="form-control"/>
-            <span class="field-error" th:if="${#fields.hasErrors('direccionEnvio')}" th:errors="*{direccionEnvio}"></span>
+        <div class="mb-4">
+            <label for="direccionEnvio" class="form-label">Dirección de envío *</label>
+            <input id="direccionEnvio" type="text" th:field="*{direccionEnvio}" class="form-control"
+                   th:classappend="${#fields.hasErrors('direccionEnvio')} ? 'is-invalid'"/>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('direccionEnvio')}" th:errors="*{direccionEnvio}"></div>
         </div>
 
-        <div class="form-actions">
+        <div class="d-flex gap-2">
             <button type="submit" class="btn btn-primary">Guardar</button>
-            <a th:href="@{/templates/pedidos}" class="btn btn-secondary">Cancelar</a>
+            <a th:href="@{/pedidos}" class="btn btn-secondary">Cancelar</a>
         </div>
     </form>
 </main>

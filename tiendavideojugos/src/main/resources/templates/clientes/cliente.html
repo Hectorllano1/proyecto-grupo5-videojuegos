@@ -4,18 +4,18 @@
 <body>
 <header th:replace="~{fragments/header :: header}"></header>
 
-<main class="container main-content">
-    <div class="page-header">
-        <h1>Listado de Clientes</h1>
+<main class="container my-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">Listado de Clientes</h1>
         <a th:href="@{/clientes/nuevo}" class="btn btn-primary">+ Nuevo cliente</a>
     </div>
 
-    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
-    <div th:if="${errorMessage}" class="alert alert-error" th:text="${errorMessage}"></div>
+    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert" th:text="${errorMessage}"></div>
 
     <div class="table-responsive">
-        <table class="data-table">
-            <thead>
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-light">
             <tr>
                 <th>ID</th>
                 <th>Nombre completo</th>
@@ -37,20 +37,26 @@
                 <td th:text="${c.telefono}">600123456</td>
                 <td th:text="${c.fechaRegistro}">2026-01-10</td>
                 <td th:text="${c.direccion != null and !#strings.isEmpty(c.direccion)} ? ${c.direccion} : '-'">-</td>
-                <td th:text="${c.esPremium} ? 'Sí' : 'No'">No</td>
-                <td class="actions">
-                    <a th:href="@{/clientes/editar/{id}(id=${c.id})}" class="btn btn-secondary btn-sm">Editar</a>
-                    <form th:action="@{/clientes/eliminar/{id}(id=${c.id})}" method="post" class="inline-form">
-                        <button type="submit"
-                                class="btn btn-danger btn-sm"
-                                onclick="return confirm('¿Seguro que deseas eliminar este cliente?');">
-                            Eliminar
-                        </button>
-                    </form>
+                <td>
+                    <span class="badge"
+                          th:classappend="${c.esPremium} ? 'bg-success' : 'bg-secondary'"
+                          th:text="${c.esPremium} ? 'Sí' : 'No'">No</span>
+                </td>
+                <td>
+                    <div class="d-flex gap-1">
+                        <a th:href="@{/clientes/editar/{id}(id=${c.id})}" class="btn btn-secondary btn-sm">Editar</a>
+                        <form th:action="@{/clientes/eliminar/{id}(id=${c.id})}" method="post" class="d-inline">
+                            <button type="submit"
+                                    class="btn btn-danger btn-sm"
+                                    onclick="return confirm('¿Seguro que deseas eliminar este cliente?');">
+                                Eliminar
+                            </button>
+                        </form>
+                    </div>
                 </td>
             </tr>
             <tr th:if="${#lists.isEmpty(clientes)}">
-                <td colspan="9" class="empty-row">No hay clientes registrados todavía.</td>
+                <td colspan="9" class="text-center text-muted py-4">No hay clientes registrados todavía.</td>
             </tr>
             </tbody>
         </table>
